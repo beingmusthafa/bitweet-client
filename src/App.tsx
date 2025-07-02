@@ -6,11 +6,12 @@ import {
 } from "react-router-dom";
 import { Provider } from "react-redux";
 import { store } from "./store";
-import HomePage from "./pages/HomePage";
 import "./App.css";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import ProtectedRoute from "./components/global/ProtectedRoute";
+import ProfilePage from "./pages/ProfilePage";
+import MainLayout from "./components/global/MainLayout";
 
 export default function App() {
   return (
@@ -23,10 +24,13 @@ export default function App() {
             path="/"
             element={
               <ProtectedRoute>
-                <HomePage />
+                <MainLayout />
               </ProtectedRoute>
             }
-          />
+          >
+            <Route index element={<Navigate to="/profile" replace />} />
+            <Route path="profile" element={<ProfilePage />} />
+          </Route>
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </Router>
