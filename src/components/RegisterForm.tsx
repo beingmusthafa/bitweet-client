@@ -1,5 +1,3 @@
-"use client";
-
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Link, useNavigate } from "react-router-dom";
@@ -60,7 +58,7 @@ export default function RegisterForm() {
   };
 
   return (
-    <Card className="w-[25rem]">
+    <Card className="w-[25rem] mx-auto mt-32">
       <CardHeader className="space-y-1">
         <CardTitle className="text-2xl font-bold text-center">
           Create account
