@@ -111,7 +111,7 @@ const authSlice = createSlice({
       })
       .addCase(fetchProfile.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.payload as string;
+        // state.error = action.payload as string;
       })
       .addCase(login.pending, (state) => {
         state.isLoading = true;
