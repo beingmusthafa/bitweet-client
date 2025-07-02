@@ -32,7 +32,7 @@ export const fetchProfile = createAsyncThunk(
       return response.data;
     } catch (error: any) {
       return rejectWithValue(
-        error.response?.data?.message || "Failed to fetch profile"
+        error.response?.data?.detail || "Failed to fetch profile"
       );
     }
   }
@@ -48,7 +48,7 @@ export const login = createAsyncThunk(
       const response = await api.post("/auth/login", credentials);
       return response.data;
     } catch (error: any) {
-      return rejectWithValue(error.response?.data?.message || "Login failed");
+      return rejectWithValue(error.response?.data?.detail || "Login failed");
     }
   }
 );
@@ -69,7 +69,7 @@ export const register = createAsyncThunk(
       return response.data;
     } catch (error: any) {
       return rejectWithValue(
-        error.response?.data?.message || "Registration failed"
+        error.response?.data?.detail || "Registration failed"
       );
     }
   }
@@ -81,7 +81,7 @@ export const logout = createAsyncThunk(
     try {
       await api.post("/auth/logout");
     } catch (error: any) {
-      return rejectWithValue(error.response?.data?.message || "Logout failed");
+      return rejectWithValue(error.response?.data?.detail || "Logout failed");
     }
   }
 );
