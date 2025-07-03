@@ -92,29 +92,35 @@ export default function PeoplePage() {
       </div>
 
       <div className="space-y-2 flex flex-col items-center w-full">
-        {users.map((user) => (
-          <div
-            key={user.id}
-            className="flex items-center gap-3 p-3 bg-white rounded-lg border border-gray-200 w-[30rem]"
-          >
-            <UserAvatar size="sm" />
-            <div className="flex-1 min-w-0">
-              <p className="font-medium text-gray-900 truncate text-sm">
-                {user.fullName}
-              </p>
-              <p className="text-xs text-gray-500 truncate">@{user.username}</p>
-            </div>
-            <Button
-              size="sm"
-              onClick={() => handleFollow(user.id)}
-              disabled={followingUsers.has(user.id)}
-              className="text-xs px-3 py-1 h-7"
+        {users.length === 0 ? (
+          <p className="text-gray-400 my-32">No users to show</p>
+        ) : (
+          users.map((user) => (
+            <div
+              key={user.id}
+              className="flex items-center gap-3 p-3 bg-white rounded-lg border border-gray-200 w-[30rem]"
             >
-              <UserPlus className="h-3 w-3" />
-              {followingUsers.has(user.id) ? "Following" : "Follow"}
-            </Button>
-          </div>
-        ))}
+              <UserAvatar size="sm" />
+              <div className="flex-1 min-w-0">
+                <p className="font-medium text-gray-900 truncate text-sm">
+                  {user.fullName}
+                </p>
+                <p className="text-xs text-gray-500 truncate">
+                  @{user.username}
+                </p>
+              </div>
+              <Button
+                size="sm"
+                onClick={() => handleFollow(user.id)}
+                disabled={followingUsers.has(user.id)}
+                className="text-xs px-3 py-1 h-7"
+              >
+                <UserPlus className="h-3 w-3" />
+                {followingUsers.has(user.id) ? "Following" : "Follow"}
+              </Button>
+            </div>
+          ))
+        )}
       </div>
 
       {hasMore && (
