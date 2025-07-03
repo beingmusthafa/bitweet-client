@@ -12,6 +12,7 @@ import RegisterPage from "./pages/RegisterPage";
 import ProtectedRoute from "./components/global/ProtectedRoute";
 import ProfilePage from "./pages/ProfilePage";
 import PeoplePage from "./pages/PeoplePage";
+import FeedPage from "./pages/FeedPage";
 import MainLayout from "./components/global/MainLayout";
 
 export default function App() {
@@ -32,6 +33,7 @@ export default function App() {
             <Route index element={<Navigate to="/profile" replace />} />
             <Route path="profile" element={<ProfilePage />} />
             <Route path="people" element={<PeoplePage />} />
+            <Route path="feed" element={<FeedPage />} />
           </Route>
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>

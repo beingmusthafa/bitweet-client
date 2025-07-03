@@ -3,7 +3,12 @@ export interface Tweet {
   text: string;
   isPrivate: boolean;
   createdAt: string;
-  updatedAt: string;
+  updatedAt?: string;
+  user?: {
+    id: string;
+    fullName: string;
+    username: string;
+  };
 }
 
 export interface TweetsResponse {

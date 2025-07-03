@@ -8,4 +8,5 @@ export const endpoints = {
   follow: "/user/connections/follow",
   unfollow: "/user/connections/unfollow",
   getPeople: "/user/connections/people",
+  getFeed: "/user/tweets/",
 } as const;
