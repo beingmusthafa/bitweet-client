@@ -89,7 +89,7 @@ export default function UsersList({
     
     return (
       <div className="text-center py-8">
-        <p className="text-gray-500">{emptyText || defaultMessage}</p>
+        <p className="text-muted-foreground">{emptyText || defaultMessage}</p>
       </div>
     );
   }
@@ -100,14 +100,14 @@ export default function UsersList({
         {users.map((user) => (
           <div
             key={user.id}
-            className="flex items-center gap-3 p-3 bg-white rounded-lg border border-gray-200"
+            className="flex items-center gap-3 p-3 bg-card rounded-lg border border-border"
           >
             <UserAvatar size="sm" />
             <div className="flex-1 min-w-0">
-              <p className="font-medium text-gray-900 truncate text-sm">
+              <p className="font-medium text-card-foreground truncate text-sm">
                 {user.fullName}
               </p>
-              <p className="text-xs text-gray-500 truncate">@{user.username}</p>
+              <p className="text-xs text-muted-foreground truncate">@{user.username}</p>
             </div>
             {showUnfollowButton && (
               <Button

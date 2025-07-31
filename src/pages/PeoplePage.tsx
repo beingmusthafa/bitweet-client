@@ -93,19 +93,19 @@ export default function PeoplePage() {
 
       <div className="space-y-2 flex flex-col items-center w-full">
         {users.length === 0 ? (
-          <p className="text-gray-400 my-32">No users to show</p>
+          <p className="text-muted-foreground my-32">No users to show</p>
         ) : (
           users.map((user) => (
             <div
               key={user.id}
-              className="flex items-center gap-3 p-3 bg-white rounded-lg border border-gray-200 w-[30rem]"
+              className="flex items-center gap-3 p-3 bg-card rounded-lg border border-border w-[30rem]"
             >
               <UserAvatar size="sm" />
               <div className="flex-1 min-w-0">
-                <p className="font-medium text-gray-900 truncate text-sm">
+                <p className="font-medium text-card-foreground truncate text-sm">
                   {user.fullName}
                 </p>
-                <p className="text-xs text-gray-500 truncate">
+                <p className="text-xs text-muted-foreground truncate">
                   @{user.username}
                 </p>
               </div>

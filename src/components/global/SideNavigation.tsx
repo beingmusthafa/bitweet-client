@@ -22,7 +22,7 @@ const navigationItems = [
 
 export default function SideNavigation() {
   return (
-    <nav className="bg-white rounded-lg border border-gray-200 p-2">
+    <nav className="bg-sidebar rounded-lg border border-sidebar-border p-2">
       <ul className="space-y-1">
         {navigationItems.map((item) => (
           <li key={item.name}>
@@ -32,8 +32,8 @@ export default function SideNavigation() {
                 cn(
                   "flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-md transition-colors",
                   isActive
-                    ? "bg-primary text-white"
-                    : "text-gray-700 hover:bg-gray-100"
+                    ? "bg-primary text-secondary"
+                    : "text-sidebar-foreground hover:bg-sidebar-accent",
                 )
               }
             >

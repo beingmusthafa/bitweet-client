@@ -34,11 +34,11 @@ export default function ProfilePage() {
               <UserAvatar size="lg" />
             </div>
             <div className="flex-1 w-fit text-left">
-              <span className="text-2xl w-fit font-bold text-gray-900 mb-2">
+              <span className="text-2xl w-fit font-bold text-card-foreground mb-2">
                 {user.fullName}
               </span>
               <p className="text-lg w-fit font-medium mb-1">@{user.username}</p>
-              <p className="text-sm w-fit text-gray-600 bg-white/60 py-1 rounded-full inline-block">
+              <p className="text-sm w-fit text-muted-foreground bg-card/60 py-1 rounded-full inline-block">
                 {user.email}
               </p>
             </div>

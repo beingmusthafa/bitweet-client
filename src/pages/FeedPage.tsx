@@ -80,7 +80,7 @@ export default function FeedPage() {
 
       {tweets.length === 0 ? (
         <div className="text-center py-8">
-          <p className="text-gray-500">No tweets in your feed yet!</p>
+          <p className="text-muted-foreground">No tweets in your feed yet!</p>
         </div>
       ) : (
         <>

@@ -23,7 +23,7 @@ export default function FeedTweetItem({ tweet }: FeedTweetItemProps) {
   };
 
   return (
-    <div className="border border-b-3 border-b-black border-gray-200 hover:bg-gray-50 transition-colors">
+    <div className="border border-b-3 border-b-black border-border hover:bg-muted/50 transition-colors">
       <div className="max-w-lg mx-auto px-4 py-3">
         <div className="flex gap-3">
           <div className="flex-shrink-0">
@@ -33,28 +33,28 @@ export default function FeedTweetItem({ tweet }: FeedTweetItemProps) {
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-1 mb-1">
               <div className="flex flex-col items-start">
-                <span className="font-bold text-gray-900 hover:underline cursor-pointer">
+                <span className="font-bold text-card-foreground hover:underline cursor-pointer">
                   {tweet.user?.fullName || "Unknown User"}
                 </span>
                 <div className="flex items-center gap-1">
-                  <span className="text-gray-500">
+                  <span className="text-muted-foreground">
                     @{tweet.user?.username || "unknown"}
                   </span>
-                  <span className="text-gray-500">·</span>
-                  <span className="text-gray-500 text-sm">
+                  <span className="text-muted-foreground">·</span>
+                  <span className="text-muted-foreground text-sm">
                     {formatDate(tweet.createdAt)}
                   </span>
                   {tweet.isPrivate && (
                     <>
-                      <span className="text-gray-500">·</span>
-                      <Lock className="h-4 w-4 text-gray-500" />
+                      <span className="text-muted-foreground">·</span>
+                      <Lock className="h-4 w-4 text-muted-foreground" />
                     </>
                   )}
                 </div>
               </div>
             </div>
 
-            <div className="text-gray-900 text-left text-[15px] leading-5 mb-3">
+            <div className="text-card-foreground text-left text-[15px] leading-5 mb-3">
               {tweet.text}
             </div>
           </div>

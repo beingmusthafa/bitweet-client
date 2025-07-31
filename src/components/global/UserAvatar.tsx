@@ -17,12 +17,12 @@ export default function UserAvatar({
 
   return (
     <div
-      className={`${sizeClasses[size]} bg-gray-200 rounded-full flex items-center justify-center ${className}`}
+      className={`${sizeClasses[size]} bg-muted rounded-full flex items-center justify-center ${className}`}
     >
       <User
         className={`${
           size === "sm" ? "h-4 w-4" : size === "md" ? "h-5 w-5" : "h-8 w-8"
-        } text-gray-500`}
+        } text-muted-foreground`}
       />
     </div>
   );

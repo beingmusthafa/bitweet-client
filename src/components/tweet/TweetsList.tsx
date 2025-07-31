@@ -32,7 +32,7 @@ export default function TweetsList() {
   if (tweets.length === 0) {
     return (
       <div className="text-center py-8">
-        <p className="text-gray-500">No tweets yet!</p>
+        <p className="text-muted-foreground">No tweets yet!</p>
       </div>
     );
   }
