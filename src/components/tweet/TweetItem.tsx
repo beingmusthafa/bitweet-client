@@ -27,7 +27,7 @@ interface TweetItemProps {
   onDelete: (id: string) => void;
   onUpdate: (
     id: string,
-    data: { text: string; isPrivate: boolean }
+    data: { text: string; isPrivate: boolean },
   ) => Promise<any>;
 }
 
@@ -88,8 +88,8 @@ export default function TweetItem({
   };
 
   return (
-    <div className="border border-b-3 border-b-black border-border hover:bg-muted/50 transition-colors">
-      <div className="max-w-lg mx-auto px-4 py-3">
+    <div className="border-y border-border transition-colors">
+      <div className="max-w-lg mx-auto p-4">
         {isEditing ? (
           <div className="space-y-4">
             <div>
@@ -105,99 +105,101 @@ export default function TweetItem({
               />
             </div>
 
-            <div className="flex items-center gap-2">
-              <Switch
-                id="edit-private"
-                checked={editIsPrivate}
-                onCheckedChange={setEditIsPrivate}
-              />
-              <Label htmlFor="edit-private" className="text-sm">
-                Private tweet
-              </Label>
-            </div>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Switch
+                  id="edit-private"
+                  checked={editIsPrivate}
+                  onCheckedChange={setEditIsPrivate}
+                />
+                <Label htmlFor="edit-private" className="text-sm">
+                  Private tweet
+                </Label>
+              </div>
 
-            <div className="flex gap-2">
-              <Button
-                size="sm"
-                onClick={handleSave}
-                disabled={isUpdating || !editText.trim()}
-              >
-                {isUpdating ? "Saving..." : "Save"}
-              </Button>
-              <Button
-                size="sm"
-                variant="outline"
-                onClick={handleCancel}
-                disabled={isUpdating}
-              >
-                Cancel
-              </Button>
+              <div className="flex gap-2">
+                <Button
+                  size="sm"
+                  onClick={handleSave}
+                  disabled={isUpdating || !editText.trim()}
+                >
+                  {isUpdating ? "Saving..." : "Save"}
+                </Button>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={handleCancel}
+                  disabled={isUpdating}
+                >
+                  Cancel
+                </Button>
+              </div>
             </div>
           </div>
         ) : (
-          <div className="flex gap-3">
+          <div className="flex gap-3 justify-between items-start">
             {/* Avatar */}
-            <div className="flex-shrink-0">
-              <UserAvatar />
-            </div>
 
             {/* Tweet Content */}
             <div className="flex-1 min-w-0">
               {/* Header */}
-              <div className="flex items-center gap-1 mb-1">
-                <div className="flex flex-col items-start">
-                  <span className="font-bold text-card-foreground hover:underline cursor-pointer">
-                    {user?.fullName || "Unknown User"}
-                  </span>
-                  <div className="flex items-center gap-1">
-                    <span className="text-muted-foreground">
-                      @{user?.username || "unknown"}
-                    </span>
-                    <span className="text-muted-foreground">·</span>
-                    <span className="text-muted-foreground text-sm">
-                      {formatDate(tweet.createdAt)}
-                    </span>{" "}
-                    {tweet.isPrivate && (
-                      <>
-                        <span className="text-muted-foreground">·</span>
-                        <Lock className="h-4 w-4 text-muted-foreground" />
-                      </>
-                    )}
-                  </div>
+              <div className="flex items-center gap-2 mb-3">
+                <div className="flex-shrink-0">
+                  <UserAvatar />
                 </div>
-
-                <div className="ml-auto">
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        className="h-8 w-8 hover:bg-muted"
-                      >
-                        <MoreHorizontal className="h-4 w-4" />
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                      <DropdownMenuItem onClick={handleEdit}>
-                        <Edit className="h-4 w-4 mr-2" />
-                        Edit
-                      </DropdownMenuItem>
-                      <DropdownMenuItem
-                        onClick={() => setShowDeleteDialog(true)}
-                        className="text-red-600"
-                      >
-                        <Trash2 className="h-4 w-4 mr-2" />
-                        Delete
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
+                <div className="flex items-center gap-1 mb-1">
+                  <div className="flex flex-col items-start">
+                    <span className="font-bold text-card-foreground hover:underline cursor-pointer">
+                      {user?.fullName || "Unknown User"}
+                    </span>
+                    <div className="flex items-center gap-1">
+                      <span className="text-muted">
+                        @{user?.username || "unknown"}
+                      </span>
+                      <span className="text-muted">·</span>
+                      <span className="text-muted text-sm">
+                        {formatDate(tweet.createdAt)}
+                      </span>{" "}
+                      {tweet.isPrivate && (
+                        <>
+                          <span className="text-muted-foreground">·</span>
+                          <Lock className="h-4 w-4 text-muted-foreground" />
+                        </>
+                      )}
+                    </div>
+                  </div>
+                  {/* Tweet Text */}
                 </div>
               </div>
-
-              {/* Tweet Text */}
               <div className="text-card-foreground text-left text-[15px] leading-5 mb-3">
                 {tweet.text}
               </div>
+            </div>
+            <div className="ml-auto">
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-8 w-8 hover:bg-muted"
+                  >
+                    <MoreHorizontal className="h-4 w-4" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuItem onClick={handleEdit}>
+                    <Edit className="h-4 w-4 mr-2" />
+                    Edit
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => setShowDeleteDialog(true)}
+                    className="text-red-600"
+                  >
+                    <Trash2 className="h-4 w-4 mr-2" />
+                    Delete
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
           </div>
         )}

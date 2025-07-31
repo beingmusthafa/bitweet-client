@@ -5,6 +5,7 @@ import type { Tweet } from "@/types/tweet";
 import { Button } from "@/components/ui/button";
 import { Home } from "lucide-react";
 import FeedTweetItem from "@/components/tweet/FeedTweetItem";
+import CreateTweetDialog from "@/components/tweet/CreateTweetDialog";
 
 interface FeedResponse {
   tweets: Tweet[];
@@ -71,6 +72,11 @@ export default function FeedPage() {
     );
   }
 
+  const handleTweetCreated = () => {
+    setPage(1);
+    fetchTweets(1);
+  };
+
   return (
     <div className="space-y-4">
       <div className="flex items-center gap-2 mb-6">
@@ -103,6 +109,8 @@ export default function FeedPage() {
           )}
         </>
       )}
+
+      <CreateTweetDialog onTweetCreated={handleTweetCreated} />
     </div>
   );
 }
