@@ -98,16 +98,18 @@ export default function PeoplePage() {
           users.map((user) => (
             <div
               key={user.id}
-              className="flex items-center gap-3 p-3 bg-card rounded-lg border border-border w-[30rem]"
+              className="flex items-center gap-3 p-3 bg-card rounded-lg border border-border justify-between px-8 w-3/5"
             >
-              <UserAvatar size="sm" />
-              <div className="flex-1 min-w-0">
-                <p className="font-medium text-card-foreground truncate text-sm">
-                  {user.fullName}
-                </p>
-                <p className="text-xs text-muted-foreground truncate">
-                  @{user.username}
-                </p>
+              <div className="flex items-center gap-4">
+                <UserAvatar size="sm" />
+                <div className="flex-1 min-w-0">
+                  <p className="font-medium text-card-foreground truncate text-sm">
+                    {user.fullName}
+                  </p>
+                  <p className="text-xs text-muted-foreground truncate">
+                    @{user.username}
+                  </p>
+                </div>
               </div>
               <Button
                 size="sm"

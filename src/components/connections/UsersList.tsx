@@ -20,7 +20,7 @@ interface UsersListProps {
   emptyText?: string;
   showUnfollowButton?: boolean;
   onUnfollow?: (userId: string) => void;
-  listType?: 'followers' | 'following';
+  listType?: "followers" | "following";
 }
 
 export default function UsersList({
@@ -33,7 +33,7 @@ export default function UsersList({
   listType,
 }: UsersListProps) {
   const [unfollowingUsers, setUnfollowingUsers] = useState<Set<string>>(
-    new Set()
+    new Set(),
   );
   const [confirmDialog, setConfirmDialog] = useState<{
     open: boolean;
@@ -81,12 +81,13 @@ export default function UsersList({
   }
 
   if (users.length === 0) {
-    const defaultMessage = listType === 'followers' 
-      ? "No followers yet" 
-      : listType === 'following' 
-      ? "Not following anyone yet" 
-      : "No users found";
-    
+    const defaultMessage =
+      listType === "followers"
+        ? "No followers yet"
+        : listType === "following"
+          ? "Not following anyone yet"
+          : "No users found";
+
     return (
       <div className="text-center py-8">
         <p className="text-muted-foreground">{emptyText || defaultMessage}</p>
@@ -100,14 +101,18 @@ export default function UsersList({
         {users.map((user) => (
           <div
             key={user.id}
-            className="flex items-center gap-3 p-3 bg-card rounded-lg border border-border"
+            className="flex items-center gap-3 p-3 bg-card rounded-lg border border-border justify-between px-8"
           >
-            <UserAvatar size="sm" />
-            <div className="flex-1 min-w-0">
-              <p className="font-medium text-card-foreground truncate text-sm">
-                {user.fullName}
-              </p>
-              <p className="text-xs text-muted-foreground truncate">@{user.username}</p>
+            <div className="flex items-center gap-4">
+              <UserAvatar size="sm" />
+              <div className="flex-1 min-w-0">
+                <p className="font-medium text-card-foreground truncate text-sm">
+                  {user.fullName}
+                </p>
+                <p className="text-xs text-muted-foreground truncate">
+                  @{user.username}
+                </p>
+              </div>
             </div>
             {showUnfollowButton && (
               <Button

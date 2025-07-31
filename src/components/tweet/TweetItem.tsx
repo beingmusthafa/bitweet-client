@@ -59,8 +59,8 @@ export default function TweetItem({
         isPrivate: editIsPrivate,
       });
       setIsEditing(false);
-    } catch (error) {
-      // Error handled in parent
+    } catch (error: any) {
+      console.error(error);
     } finally {
       setIsUpdating(false);
     }
