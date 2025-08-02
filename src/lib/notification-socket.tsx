@@ -75,14 +75,9 @@ class NotificationWebSocket {
   }
 
   private showNotificationToast(notification: any) {
-    toast.custom(
-      (t) => {
-        return <NotificationToast t={t} notification={notification} />;
-      },
-      {
-        duration: 1000000,
-      },
-    );
+    toast.custom((t) => {
+      return <NotificationToast t={t} notification={notification} />;
+    });
   }
 
   private scheduleReconnect() {

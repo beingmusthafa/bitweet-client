@@ -24,7 +24,10 @@ const NotificationToast = ({ notification, t }: NotificationToastProps) => {
   };
 
   return (
-    <div className="flex items-start gap-3 p-3 min-w-[320px] border-border/50 border-2 rounded-md bg-card">
+    <div
+      onClick={handleViewNotifications}
+      className="flex cursor-pointer items-start gap-3 p-3 min-w-[320px] border-border/50 border-2 rounded-md bg-card"
+    >
       <div className="flex-shrink-0">
         <Bell className="h-5 w-5 text-accent mt-0.5" />
       </div>
@@ -35,15 +38,12 @@ const NotificationToast = ({ notification, t }: NotificationToastProps) => {
         <div className="text-sm text-start text-muted-foreground line-clamp-2 mb-2">
           {notification.message}
         </div>
-        <button
-          onClick={handleViewNotifications}
-          className="text-xs text-accent font-medium transition-colors"
-        >
-          View all notifications
-        </button>
       </div>
       <button
-        onClick={() => toast.dismiss(t)}
+        onClick={(e) => {
+          e.stopPropagation();
+          toast.dismiss(t);
+        }}
         className="flex-shrink-0 p-1 rounded-full hover:bg-muted transition-colors"
       >
         <X className="h-4 w-4 text-muted-foreground" />
