@@ -88,8 +88,8 @@ export default function TweetItem({
   };
 
   return (
-    <div className="border-y border-border transition-colors">
-      <div className="max-w-lg mx-auto p-4">
+    <div className="border-border/50 first:border-t-0 border-t transition-colors">
+      <div className="mx-auto p-4">
         {isEditing ? (
           <div className="space-y-4">
             <div>

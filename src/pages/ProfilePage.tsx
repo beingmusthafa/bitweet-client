@@ -153,7 +153,7 @@ export default function ProfilePage() {
               <p className="text-muted-foreground">No tweets yet!</p>
             </div>
           ) : (
-            <div className="space-y-4">
+            <div>
               {tweets.map((tweet) => (
                 <TweetItem
                   key={tweet.id}

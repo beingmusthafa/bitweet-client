@@ -24,7 +24,7 @@ export default function FeedTweetItem({ tweet }: FeedTweetItemProps) {
 
   return (
     <div className="border border-b-3 border-b-black border-border hover:bg-muted/50 transition-colors">
-      <div className="max-w-lg mx-auto px-4 py-3">
+      <div className="mx-auto px-4 py-3">
         <div className="flex gap-3">
           <div className="flex-shrink-0">
             <UserAvatar />
