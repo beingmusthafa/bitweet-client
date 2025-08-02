@@ -54,7 +54,7 @@ export default function NotificationsPage() {
     if (allNotifications.length === 0) {
       fetchNotifications(1);
     }
-  }, []);
+  }, [allNotifications.length]);
 
   useEffect(() => {
     const hasUnreadNotifications = allNotifications.some(
