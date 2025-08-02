@@ -4,9 +4,9 @@ import { cn } from "@/lib/utils";
 
 const navigationItems = [
   {
-    name: "My Profile",
-    href: "/profile",
-    icon: User,
+    name: "Feed",
+    href: "/feed",
+    icon: Home,
   },
   {
     name: "People",
@@ -14,14 +14,14 @@ const navigationItems = [
     icon: Users,
   },
   {
-    name: "Feed",
-    href: "/feed",
-    icon: Home,
-  },
-  {
     name: "Notifications",
     href: "/notifications",
     icon: Bell,
+  },
+  {
+    name: "My Profile",
+    href: "/profile",
+    icon: User,
   },
 ];
 

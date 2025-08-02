@@ -23,37 +23,37 @@ export default function FeedTweetItem({ tweet }: FeedTweetItemProps) {
   };
 
   return (
-    <div className="border border-b-3 border-b-black border-border hover:bg-muted/50 transition-colors">
-      <div className="mx-auto px-4 py-3">
-        <div className="flex gap-3">
-          <div className="flex-shrink-0">
-            <UserAvatar />
-          </div>
-
+    <div className="border-border/50 first:border-t-0 border-t transition-colors">
+      <div className="mx-auto p-4">
+        <div className="flex gap-3 justify-between items-start">
           <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-1 mb-1">
-              <div className="flex flex-col items-start">
-                <span className="font-bold text-card-foreground hover:underline cursor-pointer">
-                  {tweet.user?.fullName || "Unknown User"}
-                </span>
-                <div className="flex items-center gap-1">
-                  <span className="text-muted-foreground">
-                    @{tweet.user?.username || "unknown"}
+            <div className="flex items-center gap-2 mb-3">
+              <div className="flex-shrink-0">
+                <UserAvatar />
+              </div>
+              <div className="flex items-center gap-1 mb-1">
+                <div className="flex flex-col items-start">
+                  <span className="font-bold text-card-foreground hover:underline cursor-pointer">
+                    {tweet.user?.fullName || "Unknown User"}
                   </span>
-                  <span className="text-muted-foreground">·</span>
-                  <span className="text-muted-foreground text-sm">
-                    {formatDate(tweet.createdAt)}
-                  </span>
-                  {tweet.isPrivate && (
-                    <>
-                      <span className="text-muted-foreground">·</span>
-                      <Lock className="h-4 w-4 text-muted-foreground" />
-                    </>
-                  )}
+                  <div className="flex items-center gap-1">
+                    <span className="text-muted">
+                      @{tweet.user?.username || "unknown"}
+                    </span>
+                    <span className="text-muted">·</span>
+                    <span className="text-muted text-sm">
+                      {formatDate(tweet.createdAt)}
+                    </span>
+                    {tweet.isPrivate && (
+                      <>
+                        <span className="text-muted-foreground">·</span>
+                        <Lock className="h-4 w-4 text-muted-foreground" />
+                      </>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
-
             <div className="text-card-foreground text-left text-[15px] leading-5 mb-3">
               {tweet.text}
             </div>
