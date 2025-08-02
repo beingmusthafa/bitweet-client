@@ -7,7 +7,7 @@ import NotificationToast from "../components/notifications/NotificationToast";
 import { toast } from "sonner";
 
 interface NotificationMessage {
-  event: "unread_notifications" | "new_notification";
+  type: "unread_notifications" | "new_notification";
   data: any;
 }
 
@@ -37,6 +37,7 @@ class NotificationWebSocket {
       this.ws.onmessage = (event) => {
         try {
           const message: NotificationMessage = JSON.parse(event.data);
+          console.log("got a realtime message, passing");
           this.handleMessage(message);
         } catch (error) {
           console.error("Failed to parse WebSocket message:", error);
@@ -58,24 +59,30 @@ class NotificationWebSocket {
   }
 
   private handleMessage(message: NotificationMessage) {
-    const { event, data } = message;
+    const { type, data } = message;
 
-    switch (event) {
+    switch (type) {
       case "unread_notifications":
         store.dispatch(setUnreadNotifications(data));
         break;
 
       case "new_notification":
         store.dispatch(addNewNotification(data));
+        console.log("Got realtime notification :", data.message);
         this.showNotificationToast(data);
         break;
     }
   }
 
   private showNotificationToast(notification: any) {
-    toast.custom((t) => {
-      return <NotificationToast t={t} notification={notification} />;
-    });
+    toast.custom(
+      (t) => {
+        return <NotificationToast t={t} notification={notification} />;
+      },
+      {
+        duration: 1000000,
+      },
+    );
   }
 
   private scheduleReconnect() {

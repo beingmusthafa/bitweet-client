@@ -24,20 +24,20 @@ const NotificationToast = ({ notification, t }: NotificationToastProps) => {
   };
 
   return (
-    <div className="flex items-start gap-3 p-3 min-w-[320px]">
+    <div className="flex items-start gap-3 p-3 min-w-[320px] border-border/50 border-2 rounded-md bg-card">
       <div className="flex-shrink-0">
-        <Bell className="h-5 w-5 text-blue-500 mt-0.5" />
+        <Bell className="h-5 w-5 text-accent mt-0.5" />
       </div>
       <div className="flex-1 min-w-0">
-        <div className="font-medium text-sm text-foreground mb-1">
+        <div className="font-medium text-start text-sm text-foreground mb-1">
           {notification.title}
         </div>
-        <div className="text-sm text-muted-foreground line-clamp-2 mb-2">
+        <div className="text-sm text-start text-muted-foreground line-clamp-2 mb-2">
           {notification.message}
         </div>
         <button
           onClick={handleViewNotifications}
-          className="text-xs text-blue-500 hover:text-blue-600 font-medium transition-colors"
+          className="text-xs text-accent font-medium transition-colors"
         >
           View all notifications
         </button>
