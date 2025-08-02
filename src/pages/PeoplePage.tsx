@@ -106,7 +106,7 @@ export default function PeoplePage() {
                   <p className="font-medium text-card-foreground truncate text-sm">
                     {user.fullName}
                   </p>
-                  <p className="text-xs text-muted-foreground truncate">
+                  <p className="text-xs text-start text-muted-foreground truncate">
                     @{user.username}
                   </p>
                 </div>
