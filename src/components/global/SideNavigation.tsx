@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import { User, Users, Home } from "lucide-react";
+import { User, Users, Home, Bell } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const navigationItems = [
@@ -17,6 +17,11 @@ const navigationItems = [
     name: "Feed",
     href: "/feed",
     icon: Home,
+  },
+  {
+    name: "Notifications",
+    href: "/notifications",
+    icon: Bell,
   },
 ];
 

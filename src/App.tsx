@@ -13,6 +13,7 @@ import ProtectedRoute from "./components/global/ProtectedRoute";
 import ProfilePage from "./pages/ProfilePage";
 import PeoplePage from "./pages/PeoplePage";
 import FeedPage from "./pages/FeedPage";
+import NotificationsPage from "./pages/NotificationsPage";
 import MainLayout from "./components/global/MainLayout";
 
 export default function App() {
@@ -34,6 +35,7 @@ export default function App() {
             <Route path="profile" element={<ProfilePage />} />
             <Route path="people" element={<PeoplePage />} />
             <Route path="feed" element={<FeedPage />} />
+            <Route path="notifications" element={<NotificationsPage />} />
           </Route>
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
