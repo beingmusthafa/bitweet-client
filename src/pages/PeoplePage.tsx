@@ -98,7 +98,7 @@ export default function PeoplePage() {
           users.map((user) => (
             <div
               key={user.id}
-              className="flex items-center gap-3 p-3 bg-card rounded-lg border border-border justify-between px-8 w-3/5"
+              className="flex items-center gap-3 p-3 bg-card rounded-lg border border-border justify-between px-8 w-full"
             >
               <div className="flex items-center gap-4">
                 <UserAvatar size="sm" />
