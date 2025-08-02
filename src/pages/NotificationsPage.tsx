@@ -57,9 +57,11 @@ export default function NotificationsPage() {
   }, []);
 
   useEffect(() => {
-    const hasUnreadNotifications = allNotifications.some(notification => !notification.is_read);
+    const hasUnreadNotifications = allNotifications.some(
+      (notification) => !notification.is_read,
+    );
     if (hasUnreadNotifications) {
-      api.patch('/notifications/mark-all-read').catch(() => {});
+      api.patch("/notifications/mark-all-read").catch(() => {});
     }
   }, [allNotifications]);
 
@@ -72,7 +74,7 @@ export default function NotificationsPage() {
   const handleClearNotifications = async () => {
     try {
       setIsClearing(true);
-      await api.delete('/notifications/clear-all');
+      await api.delete("/notifications/clear-all");
       setAllNotifications([]);
     } catch (err: any) {
       setError(err.response?.data?.detail || "Failed to clear notifications");
@@ -139,15 +141,15 @@ export default function NotificationsPage() {
           {allNotifications.map((notification) => (
             <Card
               key={notification.id}
-              className={`${!notification.is_read ? "border-l-4 border-border/50" : "bg-muted/80"}`}
+              className={`py-3 ${!notification.is_read ? "border-l-4 border-border/50" : "bg-muted/80"}`}
             >
-              <CardContent className="p-3">
+              <CardContent className="p-3 py-0">
                 <div className="flex items-start justify-between gap-2">
                   <div className="flex-1 text-left">
                     <p className="text-sm text-card-foreground leading-relaxed">
                       {notification.message}
                     </p>
-                    <span className="text-xs text-muted-foreground mt-1.5 block">
+                    <span className="text-xs text-muted-foreground/70 mt-1.5 block text-end">
                       {formatDate(notification.created_at)}
                     </span>
                   </div>
