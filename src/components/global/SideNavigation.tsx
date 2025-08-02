@@ -27,7 +27,7 @@ const navigationItems = [
 
 export default function SideNavigation() {
   return (
-    <nav className="bg-sidebar rounded-lg border border-sidebar-border p-2">
+    <nav className="bg-sidebar rounded-lg border border-sidebar-border p-2 sticky top-24">
       <ul className="space-y-1">
         {navigationItems.map((item) => (
           <li key={item.name}>

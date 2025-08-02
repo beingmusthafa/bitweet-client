@@ -55,7 +55,7 @@ export default function MainLayout() {
     <div className="min-h-screen md:min-w-[70vw] bg-background w-full">
       <header className=" border-b border-border sticky top-0 z-10">
         <div className="px-4">
-          <div className="flex justify-between items-center h-16">
+          <div className="flex justify-between items-center h-16 bg-background">
             <div className="flex items-center">
               <h1 className="text-xl font-bold text-primary">Bitweet </h1>
             </div>
@@ -68,7 +68,7 @@ export default function MainLayout() {
                   <Button variant="ghost" size="sm" className="relative">
                     <Bell className="h-5 w-5" />
                     {unreadNotifications.length > 0 && (
-                      <Badge className="absolute -top-1 -right-1 h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs bg-blue-500">
+                      <Badge className="absolute -top-1 -right-1 h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs bg-">
                         {unreadNotifications.length > 9
                           ? "9+"
                           : unreadNotifications.length}
