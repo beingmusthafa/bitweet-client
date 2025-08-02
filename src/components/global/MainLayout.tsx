@@ -63,12 +63,12 @@ export default function MainLayout() {
         </div>
       </header>
 
-      <div className="px-4 py-6 w-full">
-        <div className="flex gap-6">
-          <aside className="w-48 flex-shrink-0">
+      <div className="w-full">
+        <div className="flex gap-6 h-[calc(100dvh-100px)]">
+          <aside className="w-48  flex-shrink-0">
             <SideNavigation />
           </aside>
-          <main className="flex-1 w-full">
+          <main className="flex-1 w-full py-6">
             <Outlet />
           </main>
         </div>
