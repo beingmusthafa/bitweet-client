@@ -68,7 +68,7 @@ export default function MainLayout() {
                   <Button variant="ghost" size="sm" className="relative">
                     <Bell className="h-5 w-5" />
                     {unreadNotifications.length > 0 && (
-                      <Badge className="absolute -top-1 -right-1 h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs bg-">
+                      <Badge className="absolute -top-1 -right-1 h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs bg-accent">
                         {unreadNotifications.length > 9
                           ? "9+"
                           : unreadNotifications.length}
@@ -86,16 +86,16 @@ export default function MainLayout() {
                     </h3>
                   </div>
 
-                  <div className="max-h-80 overflow-y-auto">
+                  <div className="min-h-64 overflow-y-auto">
                     {unreadNotifications.length > 0 ? (
                       <div className="py-2">
                         {unreadNotifications.slice(0, 5).map((notification) => (
                           <div
                             key={notification.id}
-                            className="px-4 py-3 hover:bg-muted/50 border-b border-muted/30 last:border-b-0 cursor-pointer transition-colors"
+                            className="px-4 py-3 hover:bg-muted/50 border-b border-muted/30 last:border-b-0 transition-colors"
                           >
                             <div className="flex items-start gap-3">
-                              <div className="w-2 h-2 bg-blue-500 rounded-full mt-2 flex-shrink-0"></div>
+                              <div className="w-2 h-2 bg-accent rounded-full mt-2 flex-shrink-0"></div>
                               <div className="flex-1 min-w-0">
                                 <div className="font-medium text-sm text-foreground mb-1 line-clamp-1">
                                   {notification.title}
@@ -105,7 +105,7 @@ export default function MainLayout() {
                                 </div>
                                 <div className="text-xs text-muted-foreground">
                                   {new Date(
-                                    notification.createdAt,
+                                    notification.created_at,
                                   ).toLocaleDateString("en-US", {
                                     month: "short",
                                     day: "numeric",
@@ -138,7 +138,7 @@ export default function MainLayout() {
                     )}
                   </div>
 
-                  <div className="p-3 border-t bg-muted/20">
+                  <div className=" border-t bg-muted/20">
                     <Button
                       variant="ghost"
                       size="sm"

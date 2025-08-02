@@ -10,7 +10,7 @@ interface Notification {
   title: string;
   message: string;
   type: string;
-  createdAt: string;
+  created_at: string;
   isRead: boolean;
 }
 
@@ -40,10 +40,10 @@ export const fetchNotifications = createAsyncThunk(
       return { data: response.data, page };
     } catch (error: any) {
       return rejectWithValue(
-        error.response?.data?.detail || "Failed to fetch notifications"
+        error.response?.data?.detail || "Failed to fetch notifications",
       );
     }
-  }
+  },
 );
 
 const notificationSlice = createSlice({
@@ -51,7 +51,9 @@ const notificationSlice = createSlice({
   initialState,
   reducers: {
     setUnreadNotifications: (state, action: PayloadAction<Notification[]>) => {
-      state.unreadNotifications = Array.isArray(action.payload) ? action.payload : [];
+      state.unreadNotifications = Array.isArray(action.payload)
+        ? action.payload
+        : [];
     },
     addNewNotification: (state, action: PayloadAction<Notification>) => {
       if (!Array.isArray(state.unreadNotifications)) {
@@ -75,13 +77,13 @@ const notificationSlice = createSlice({
       .addCase(fetchNotifications.fulfilled, (state, action) => {
         state.isLoading = false;
         const { data, page } = action.payload;
-        
+
         if (page === 1) {
           state.allNotifications = data.notifications || [];
         } else {
           state.allNotifications.push(...(data.notifications || []));
         }
-        
+
         state.hasMore = data.hasMore || false;
         state.currentPage = page;
       })
