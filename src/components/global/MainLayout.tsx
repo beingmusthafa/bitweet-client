@@ -13,6 +13,7 @@ import { Toaster } from "sonner";
 
 import SideNavigation from "./SideNavigation";
 import NotificationDropdown from "./NotificationDropdown";
+// import FloatingAudioRoom from "../audioroom/FloatingAudioRoom";
 import { logout } from "@/store/slices/authSlice";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { notificationWebSocket } from "@/lib/notification-socket";
@@ -96,6 +97,7 @@ export default function MainLayout() {
       </Dialog>
 
       <Toaster />
+      {/*<FloatingAudioRoom />*/}
     </div>
   );
 }
