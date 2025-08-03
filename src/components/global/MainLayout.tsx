@@ -8,11 +8,14 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { Toaster } from "sonner";
 
 import SideNavigation from "./SideNavigation";
+import NotificationDropdown from "./NotificationDropdown";
 import { logout } from "@/store/slices/authSlice";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { notificationWebSocket } from "@/lib/notification-socket";
 
 export default function MainLayout() {
   const dispatch = useAppDispatch();
@@ -28,11 +31,21 @@ export default function MainLayout() {
     setLogoutDialogOpen(true);
   };
 
+  useEffect(() => {
+    if (user?.id) {
+      notificationWebSocket.connect();
+    }
+
+    return () => {
+      notificationWebSocket.disconnect();
+    };
+  }, [user?.id]);
+
   return (
     <div className="min-h-screen md:min-w-[70vw] bg-background w-full">
       <header className=" border-b border-border sticky top-0 z-10">
         <div className="px-4">
-          <div className="flex justify-between items-center h-16">
+          <div className="flex justify-between items-center h-16 bg-background">
             <div className="flex items-center">
               <h1 className="text-xl font-bold text-primary">Bitweet </h1>
             </div>
@@ -40,6 +53,8 @@ export default function MainLayout() {
               <span className="text-sm text-card-foreground hidden sm:block">
                 Welcome, {user?.fullName}
               </span>
+              <NotificationDropdown />
+
               <Button variant="outline" size="sm" onClick={handleLogoutClick}>
                 Logout
               </Button>
@@ -48,12 +63,12 @@ export default function MainLayout() {
         </div>
       </header>
 
-      <div className="px-4 py-6 w-full">
-        <div className="flex gap-6">
-          <aside className="w-48 flex-shrink-0">
+      <div className="w-full">
+        <div className="flex gap-6 h-[calc(100dvh-100px)]">
+          <aside className="w-48  flex-shrink-0">
             <SideNavigation />
           </aside>
-          <main className="flex-1 w-full">
+          <main className="flex-1 w-full py-6">
             <Outlet />
           </main>
         </div>
@@ -79,6 +94,8 @@ export default function MainLayout() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      <Toaster />
     </div>
   );
 }

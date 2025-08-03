@@ -85,7 +85,7 @@ export default function PeoplePage() {
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 max-w-2xl mx-auto">
       <div className="flex items-center gap-2 mb-6">
         <Users className="h-6 w-6" />
         <h1 className="text-2xl font-bold">Follow Users</h1>
@@ -98,7 +98,7 @@ export default function PeoplePage() {
           users.map((user) => (
             <div
               key={user.id}
-              className="flex items-center gap-3 p-3 bg-card rounded-lg border border-border justify-between px-8 w-3/5"
+              className="flex items-center gap-3 p-3 bg-card rounded-lg border border-border justify-between px-8 w-full"
             >
               <div className="flex items-center gap-4">
                 <UserAvatar size="sm" />
@@ -106,7 +106,7 @@ export default function PeoplePage() {
                   <p className="font-medium text-card-foreground truncate text-sm">
                     {user.fullName}
                   </p>
-                  <p className="text-xs text-muted-foreground truncate">
+                  <p className="text-xs text-start text-muted-foreground truncate">
                     @{user.username}
                   </p>
                 </div>
