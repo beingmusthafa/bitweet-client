@@ -95,7 +95,7 @@ export default function NotificationsPage() {
 
   if (error) {
     return (
-      <div className="max-w-2xl mx-auto p-6">
+      <div className=" mx-auto p-6">
         <Card>
           <CardContent className="p-6 text-center">
             <div className="text-destructive">
@@ -111,7 +111,7 @@ export default function NotificationsPage() {
   }
 
   return (
-    <div className="max-w-2xl mx-auto">
+    <div className=" mx-auto">
       <div className="flex justify-between items-center mb-6">
         <div className="flex items-center gap-2 mb-6">
           <Bell className="h-6 w-6" />

@@ -78,7 +78,7 @@ export default function FeedPage() {
   };
 
   return (
-    <div className="space-y-4 max-w-2xl mx-auto">
+    <div className="space-y-4  mx-auto">
       <div className="flex items-center gap-2 mb-6">
         <Home className="h-6 w-6" />
         <h1 className="text-2xl font-bold">Feed</h1>

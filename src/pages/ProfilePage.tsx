@@ -113,7 +113,7 @@ export default function ProfilePage() {
   if (!user) return null;
 
   return (
-    <div className="max-w-2xl mx-auto space-y-6">
+    <div className=" mx-auto space-y-6">
       <Card className="bg-gradient-to-r">
         <CardHeader className="pb-6">
           <div className="flex justify-center w-full gap-6">
