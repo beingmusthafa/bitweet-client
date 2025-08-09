@@ -17,7 +17,7 @@ export default function UserAvatar({
 
   return (
     <div
-      className={`${sizeClasses[size]} bg-muted rounded-full flex items-center justify-center ${className}`}
+      className={`${sizeClasses[size]} bg-muted flex items-center justify-center ${className}`}
     >
       <User
         className={`${

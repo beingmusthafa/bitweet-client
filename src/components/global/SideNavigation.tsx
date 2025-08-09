@@ -47,7 +47,7 @@ export default function SideNavigation() {
               cn(
                 "flex items-center gap-3 px-3 py-4 text-sm font-medium transition-colors",
                 isActive
-                  ? "bg-primary text-secondary"
+                  ? "bg-accent text-white"
                   : "text-sidebar-foreground hover:bg-sidebar-accent",
               )
             }
