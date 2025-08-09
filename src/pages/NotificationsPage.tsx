@@ -111,12 +111,8 @@ export default function NotificationsPage() {
   }
 
   return (
-    <div className=" mx-auto">
+    <div className="w-3/4 mx-auto">
       <div className="flex justify-between items-center mb-6">
-        <div className="flex items-center gap-2 mb-6">
-          <Bell className="h-6 w-6" />
-          <h1 className="text-2xl font-bold">Notifications</h1>
-        </div>
         <Button
           variant="outline"
           onClick={handleClearNotifications}
@@ -140,11 +136,11 @@ export default function NotificationsPage() {
           </CardContent>
         </Card>
       ) : (
-        <div className="space-y-4">
+        <div className="space-y-2 flex flex-col">
           {allNotifications.map((notification) => (
             <Card
               key={notification.id}
-              className={`py-3 ${!notification.is_read ? "border-l-4 border-border/50" : "bg-muted/80"}`}
+              className={`py-3 rounded-none border-0 ${!notification.is_read ? "opacity-80" : "bg-card"}`}
             >
               <CardContent className="p-3 py-0">
                 <div className="flex items-start justify-between gap-2">

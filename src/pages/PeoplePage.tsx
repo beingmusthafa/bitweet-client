@@ -72,25 +72,8 @@ export default function PeoplePage() {
     fetchUsers(1);
   }, []);
 
-  if (loading) {
-    return (
-      <div className="space-y-4">
-        <div className="flex items-center gap-2 mb-6">
-          <Users className="h-6 w-6" />
-          <h1 className="text-2xl font-bold">Follow Users</h1>
-        </div>
-        <div className="text-center py-8">Loading...</div>
-      </div>
-    );
-  }
-
   return (
-    <div className="space-y-4  mx-auto">
-      <div className="flex items-center gap-2 mb-6">
-        <Users className="h-6 w-6" />
-        <h1 className="text-2xl font-bold">Follow Users</h1>
-      </div>
-
+    <div className="space-y-4  mx-auto md:w-1/2">
       <div className="space-y-2 flex flex-col items-center w-full">
         {users.length === 0 ? (
           <p className="text-muted-foreground my-32">No users to show</p>
@@ -98,7 +81,7 @@ export default function PeoplePage() {
           users.map((user) => (
             <div
               key={user.id}
-              className="flex items-center gap-3 p-3 bg-card rounded-lg border border-border justify-between px-8 w-full"
+              className="flex items-center gap-3 p-3 bg-card justify-between px-8 w-full"
             >
               <div className="flex items-center gap-4">
                 <UserAvatar size="sm" />
