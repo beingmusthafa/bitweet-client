@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import type { RootState } from '../store';
 import { useAudioRoom } from '../hooks/useAudioRoom';
 import { useWebRTCAudio } from '../hooks/useWebRTCAudio';
+import AudioParticipants from '../components/audioroom/AudioParticipants';
 import { Button } from '../components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { Input } from '../components/ui/input';
@@ -47,6 +48,10 @@ export default function AudioRoomDetailPage() {
     handleUserLeft,
     isMuted,
     isAudioEnabled,
+    participants,
+    audioLevels,
+    initializeCurrentUser,
+    initializeExistingParticipants,
   } = useWebRTCAudio({
     sendWebSocketMessage,
   });
@@ -77,30 +82,20 @@ export default function AudioRoomDetailPage() {
     };
   }, [closeAllPeerConnections, stopAudioStream]);
 
-  // Handle WebSocket user events for WebRTC
+  // Initialize current user in participants when connected
   useEffect(() => {
-    const handleUserJoinedEvent = (event: CustomEvent) => {
-      const { user_id } = event.detail;
-      if (user_id && user_id !== currentUser?.id) {
-        handleUserJoined(user_id);
-      }
-    };
+    if (isConnected && currentUser && currentRoom && !participants.has(currentUser.id)) {
+      const isCreator = currentRoom.host_id === currentUser.id;
+      initializeCurrentUser(currentUser, isCreator);
+    }
+  }, [isConnected, currentUser, currentRoom, participants, initializeCurrentUser]);
 
-    const handleUserLeftEvent = (event: CustomEvent) => {
-      const { user_id } = event.detail;
-      if (user_id) {
-        handleUserLeft(user_id);
-      }
-    };
-
-    window.addEventListener('user_joined', handleUserJoinedEvent as EventListener);
-    window.addEventListener('user_left', handleUserLeftEvent as EventListener);
-    
-    return () => {
-      window.removeEventListener('user_joined', handleUserJoinedEvent as EventListener);
-      window.removeEventListener('user_left', handleUserLeftEvent as EventListener);
-    };
-  }, [handleUserJoined, handleUserLeft, currentUser?.id]);
+  // Initialize existing participants when room data is received
+  useEffect(() => {
+    if (currentRoom && currentRoom.existing_participants && currentRoom.existing_participants.length > 0) {
+      initializeExistingParticipants(currentRoom.existing_participants, currentRoom.host_id);
+    }
+  }, [currentRoom, initializeExistingParticipants]);
 
   // Auto-scroll to latest message
   useEffect(() => {
@@ -157,11 +152,7 @@ export default function AudioRoomDetailPage() {
       if (!isAudioEnabled) {
         await startAudioStream();
       } else {
-        if (isMuted) {
-          toggleMute();
-        } else {
-          toggleMute();
-        }
+        toggleMute(currentUser?.id);
       }
     } catch (error) {
       console.error('Failed to toggle audio:', error);
@@ -251,31 +242,19 @@ export default function AudioRoomDetailPage() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Room Info */}
+        {/* Participants */}
         <div className="lg:col-span-2">
           <Card>
             <CardHeader>
-              <CardTitle>Room Information</CardTitle>
+              <CardTitle>Audio Room</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="space-y-3">
-                <div>
-                  <span className="text-sm text-muted-foreground">Host:</span>
-                  <span className="ml-2 font-medium">{currentRoom.host?.fullName || 'Unknown'}</span>
-                </div>
-                <div>
-                  <span className="text-sm text-muted-foreground">Active Participants:</span>
-                  <span className="ml-2 font-medium">{currentRoom.active_participants || 0}</span>
-                </div>
-                <div>
-                  <span className="text-sm text-muted-foreground">Status:</span>
-                  <span className="ml-2">
-                    <Badge variant={currentRoom.is_live ? "default" : "secondary"}>
-                      {currentRoom.is_live ? "Live" : "Not Started"}
-                    </Badge>
-                  </span>
-                </div>
-              </div>
+              <AudioParticipants 
+                participants={participants}
+                audioLevels={audioLevels}
+                creatorId={currentRoom.host_id}
+                currentUserId={currentUser?.id}
+              />
             </CardContent>
           </Card>
         </div>

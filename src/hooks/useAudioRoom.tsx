@@ -88,15 +88,25 @@ export const useAudioRoom = () => {
         console.log('Connected to room:', message.room_id);
         dispatch(setConnectionStatus(true));
         setConnectionState('connected');
+        
+        // If existing participants are provided, dispatch event to initialize them
+        if (message.existing_participants && message.existing_participants.length > 0) {
+          window.dispatchEvent(new CustomEvent('existing_participants', { 
+            detail: { 
+              participants: message.existing_participants,
+              room_id: message.room_id 
+            } 
+          }));
+        }
         break;
 
       case 'user_joined':
-        console.log('User joined:', message.username);
+        console.log('User joined:', message.user?.username);
         window.dispatchEvent(new CustomEvent('user_joined', { detail: message }));
         break;
 
       case 'user_left':
-        console.log('User left:', message.username);
+        console.log('User left:', message.user?.username);
         window.dispatchEvent(new CustomEvent('user_left', { detail: message }));
         break;
 
