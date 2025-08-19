@@ -1,29 +1,35 @@
-import { useEffect, useState, useRef } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import type { RootState } from '../store';
-import { useAudioRoom } from '../hooks/useAudioRoom';
-import { useWebRTCAudio } from '../hooks/useWebRTCAudio';
-import AudioParticipants from '../components/audioroom/AudioParticipants';
-import { Button } from '../components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
-import { Input } from '../components/ui/input';
-import { Badge } from '../components/ui/badge';
-import { 
-  Mic, 
-  MicOff, 
-  MessageCircle, 
-  Phone, 
+import { useEffect, useState, useRef } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import type { RootState } from "../store";
+import { useAudioRoom } from "../hooks/useAudioRoom";
+import { useWebRTCAudio } from "../hooks/useWebRTCAudio";
+import AudioParticipants from "../components/audioroom/AudioParticipants";
+import { Button } from "../components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "../components/ui/card";
+import { Input } from "../components/ui/input";
+import { Badge } from "../components/ui/badge";
+import {
+  Mic,
+  MicOff,
+  MessageCircle,
+  Phone,
   ArrowLeft,
   Send,
-  Trash2
-} from 'lucide-react';
+  Trash2,
+  Check,
+} from "lucide-react";
 
 export default function AudioRoomDetailPage() {
   const { roomId } = useParams<{ roomId: string }>();
   const navigate = useNavigate();
   const currentUser = useSelector((state: RootState) => state.auth.user);
-  
+
   const {
     currentRoom,
     isConnected,
@@ -56,7 +62,7 @@ export default function AudioRoomDetailPage() {
     sendWebSocketMessage,
   });
 
-  const [chatMessage, setChatMessage] = useState('');
+  const [chatMessage, setChatMessage] = useState("");
   const connectionAttemptedRef = useRef(false);
   const chatContainerRef = useRef<HTMLDivElement>(null);
 
@@ -66,7 +72,10 @@ export default function AudioRoomDetailPage() {
 
   useEffect(() => {
     if (roomId && !connectionAttemptedRef.current) {
-      console.log('🚀 [UI] useEffect triggered - attempting to connect to room:', roomId);
+      console.log(
+        "🚀 [UI] useEffect triggered - attempting to connect to room:",
+        roomId
+      );
       connectionAttemptedRef.current = true;
       connectToRoom(roomId).catch(console.error);
     }
@@ -74,76 +83,105 @@ export default function AudioRoomDetailPage() {
 
   useEffect(() => {
     return () => {
-      console.log('🧹 [UI] AudioRoomDetailPage cleanup - COMPONENT UNMOUNTING');
-      console.log('🧹 [UI] This could be due to: navigation, browser refresh, or window close');
+      console.log("🧹 [UI] AudioRoomDetailPage cleanup - COMPONENT UNMOUNTING");
+      console.log(
+        "🧹 [UI] This could be due to: navigation, browser refresh, or window close"
+      );
       closeAllPeerConnections();
       stopAudioStream();
-      console.log('🧹 [UI] WebRTC and audio cleanup completed');
+      console.log("🧹 [UI] WebRTC and audio cleanup completed");
     };
   }, [closeAllPeerConnections, stopAudioStream]);
 
   // Initialize current user in participants when connected
   useEffect(() => {
-    if (isConnected && currentUser && currentRoom && !participants.has(currentUser.id)) {
+    if (
+      isConnected &&
+      currentUser &&
+      currentRoom &&
+      !participants.has(currentUser.id)
+    ) {
       const isCreator = currentRoom.host_id === currentUser.id;
       initializeCurrentUser(currentUser, isCreator);
     }
-  }, [isConnected, currentUser, currentRoom, participants, initializeCurrentUser]);
+  }, [
+    isConnected,
+    currentUser,
+    currentRoom,
+    participants,
+    initializeCurrentUser,
+  ]);
 
   // Initialize existing participants when room data is received
   useEffect(() => {
-    if (currentRoom && currentRoom.existing_participants && currentRoom.existing_participants.length > 0) {
-      initializeExistingParticipants(currentRoom.existing_participants, currentRoom.host_id);
+    if (
+      currentRoom &&
+      currentRoom.existing_participants &&
+      currentRoom.existing_participants.length > 0
+    ) {
+      initializeExistingParticipants(
+        currentRoom.existing_participants,
+        currentRoom.host_id
+      );
     }
   }, [currentRoom, initializeExistingParticipants]);
 
   // Auto-scroll to latest message
   useEffect(() => {
     if (chatContainerRef.current) {
-      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+      chatContainerRef.current.scrollTop =
+        chatContainerRef.current.scrollHeight;
     }
   }, [messages]);
 
   const handleSendMessage = () => {
     if (chatMessage.trim()) {
       sendChatMessage(chatMessage.trim());
-      setChatMessage('');
+      setChatMessage("");
     }
   };
 
   const handleLeaveRoom = async () => {
     try {
-      console.log('🚪 [UI] User clicked Leave Room button - USER INITIATED LEAVE');
-      console.log('🚪 [UI] Cleaning up WebRTC connections...');
+      console.log(
+        "🚪 [UI] User clicked Leave Room button - USER INITIATED LEAVE"
+      );
+      console.log("🚪 [UI] Cleaning up WebRTC connections...");
       closeAllPeerConnections();
-      console.log('🚪 [UI] Stopping audio stream...');
+      console.log("🚪 [UI] Stopping audio stream...");
       stopAudioStream();
-      console.log('🚪 [UI] Calling leaveRoom() function...');
+      console.log("🚪 [UI] Calling leaveRoom() function...");
       await leaveRoom();
-      console.log('🚪 [UI] Navigating back to room list...');
-      navigate('/audioroom');
+      console.log("🚪 [UI] Navigating back to room list...");
+      navigate("/audioroom");
     } catch (error) {
-      console.error('🚪 [UI] Failed to leave room:', error);
-      console.log('🚪 [UI] Navigating back anyway due to error...');
-      navigate('/audioroom');
+      console.error("🚪 [UI] Failed to leave room:", error);
+      console.log("🚪 [UI] Navigating back anyway due to error...");
+      navigate("/audioroom");
     }
   };
 
   const handleDeleteRoom = async () => {
     if (!currentRoom || !isHost) return;
-    
-    if (confirm('Are you sure you want to delete this room? This action cannot be undone.')) {
+
+    if (
+      confirm(
+        "Are you sure you want to delete this room? This action cannot be undone."
+      )
+    ) {
       try {
-        console.log('🗑️ [UI] User confirmed room deletion - HOST DELETING ROOM');
-        console.log('🗑️ [UI] Room ID:', currentRoom.id);
+        console.log(
+          "🗑️ [UI] User confirmed room deletion - HOST DELETING ROOM"
+        );
+        console.log("🗑️ [UI] Room ID:", currentRoom.id);
         await deleteRoom(currentRoom.id);
-        console.log('🗑️ [UI] Room deleted successfully, navigating back...');
-        navigate('/audioroom');
+        console.log("🗑️ [UI] Room deleted successfully, navigating back...");
+        navigate("/audioroom");
       } catch (error) {
-        console.error('🗑️ [UI] Failed to delete room:', error);
+        console.error("🗑️ [UI] Failed to delete room:", error);
       }
     } else {
-      console.log('🗑️ [UI] User cancelled room deletion');
+      console.log("🗑️ [UI] User cancelled room deletion");
     }
   };
 
@@ -155,7 +193,7 @@ export default function AudioRoomDetailPage() {
         toggleMute(currentUser?.id);
       }
     } catch (error) {
-      console.error('Failed to toggle audio:', error);
+      console.error("Failed to toggle audio:", error);
     }
   };
 
@@ -170,13 +208,13 @@ export default function AudioRoomDetailPage() {
   if (error || !currentRoom) {
     return (
       <div className="space-y-4">
-        <Button variant="ghost" onClick={() => navigate('/audioroom')}>
+        <Button variant="ghost" onClick={() => navigate("/audioroom")}>
           <ArrowLeft className="h-4 w-4 mr-2" />
           Back to Rooms
         </Button>
         <div className="text-center py-12">
-          <p className="text-destructive mb-4">{error || 'Room not found'}</p>
-          <Button onClick={() => navigate('/audioroom')}>
+          <p className="text-destructive mb-4">{error || "Room not found"}</p>
+          <Button onClick={() => navigate("/audioroom")}>
             Go Back to Rooms
           </Button>
         </div>
@@ -189,7 +227,11 @@ export default function AudioRoomDetailPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
-          <Button variant="ghost" size="sm" onClick={() => navigate('/audioroom')}>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => navigate("/audioroom")}
+          >
             <ArrowLeft className="h-4 w-4" />
           </Button>
           <div>
@@ -199,17 +241,17 @@ export default function AudioRoomDetailPage() {
                 {currentRoom.is_live ? "Live" : "Not Started"}
               </Badge>
               <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                {connectionState === 'connected' ? (
+                {connectionState === "connected" ? (
                   <>
                     <div className="w-2 h-2 bg-green-500 rounded-full"></div>
                     Connected
                   </>
-                ) : connectionState === 'connecting' ? (
+                ) : connectionState === "connecting" ? (
                   <>
                     <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
                     Connecting...
                   </>
-                ) : connectionState === 'error' ? (
+                ) : connectionState === "error" ? (
                   <>
                     <div className="w-2 h-2 bg-red-500 rounded-full"></div>
                     Connection failed
@@ -224,12 +266,12 @@ export default function AudioRoomDetailPage() {
             </div>
           </div>
         </div>
-        
+
         {/* Host Controls */}
         {isHost && (
           <div className="flex gap-2">
-            <Button 
-              onClick={handleDeleteRoom} 
+            <Button
+              onClick={handleDeleteRoom}
               variant="destructive"
               size="sm"
               className="flex items-center gap-2"
@@ -243,20 +285,13 @@ export default function AudioRoomDetailPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Participants */}
-        <div className="lg:col-span-2">
-          <Card>
-            <CardHeader>
-              <CardTitle>Audio Room</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <AudioParticipants 
-                participants={participants}
-                audioLevels={audioLevels}
-                creatorId={currentRoom.host_id}
-                currentUserId={currentUser?.id}
-              />
-            </CardContent>
-          </Card>
+        <div className="lg:col-span-2 px-8">
+          <AudioParticipants
+            participants={participants}
+            audioLevels={audioLevels}
+            creatorId={currentRoom.host_id}
+            currentUserId={currentUser?.id}
+          />
         </div>
 
         {/* Chat Section */}
@@ -269,21 +304,30 @@ export default function AudioRoomDetailPage() {
               </CardTitle>
             </CardHeader>
             <CardContent className="flex flex-col h-80">
-              <div 
+              <div
                 ref={chatContainerRef}
                 className="flex-1 overflow-y-auto space-y-3 mb-4 px-2"
               >
                 {messages.map((message, index) => (
-                  <div 
-                    key={message.tempId || `${message.user_id}-${message.timestamp}-${index}`} 
-                    className={`flex ${message.isOwn ? 'justify-end' : 'justify-start'}`}
+                  <div
+                    key={
+                      message.tempId ||
+                      `${message.user_id}-${message.timestamp}-${index}`
+                    }
+                    className={`flex ${
+                      message.isOwn ? "justify-end" : "justify-start"
+                    }`}
                   >
-                    <div className={`max-w-[80%] ${message.isOwn ? 'text-right' : 'text-left'}`}>
-                      <div 
-                        className={`inline-block rounded-lg px-3 py-2 text-sm ${
-                          message.isOwn 
-                            ? 'bg-primary text-primary-foreground' 
-                            : 'bg-muted text-muted-foreground'
+                    <div
+                      className={`max-w-[80%] ${
+                        message.isOwn ? "text-right" : "text-left"
+                      }`}
+                    >
+                      <div
+                        className={`inline-block px-3 py-2 text-sm ${
+                          message.isOwn
+                            ? "bg-primary text-primary-foreground"
+                            : "bg-muted text-muted-foreground"
                         }`}
                       >
                         {!message.isOwn && (
@@ -291,25 +335,30 @@ export default function AudioRoomDetailPage() {
                             {message.username}
                           </div>
                         )}
-                        <div className="break-words">
-                          {message.message}
-                        </div>
-                        <div className={`text-xs mt-1 opacity-60 flex items-center gap-1 ${message.isOwn ? 'justify-end' : 'justify-start'}`}>
+                        <div className="break-words">{message.message}</div>
+                        <div
+                          className={`text-xs mt-1 opacity-60 flex items-center gap-1 ${
+                            message.isOwn ? "justify-end" : "justify-start"
+                          }`}
+                        >
                           <span>
-                            {new Date(message.timestamp).toLocaleTimeString([], { 
-                              hour: '2-digit', 
-                              minute: '2-digit' 
-                            })}
+                            {new Date(message.timestamp).toLocaleTimeString(
+                              [],
+                              {
+                                hour: "2-digit",
+                                minute: "2-digit",
+                              }
+                            )}
                           </span>
                           {message.isOwn && (
                             <span className="flex items-center">
-                              {message.status === 'sending' && (
+                              {message.status === "sending" && (
                                 <div className="w-3 h-3 border border-current border-t-transparent rounded-full animate-spin ml-1"></div>
                               )}
-                              {message.status === 'sent' && (
-                                <span className="ml-1">✓</span>
+                              {message.status === "sent" && (
+                                <Check className="size-3" />
                               )}
-                              {message.status === 'failed' && (
+                              {message.status === "failed" && (
                                 <span className="ml-1 text-destructive">✗</span>
                               )}
                             </span>
@@ -325,17 +374,17 @@ export default function AudioRoomDetailPage() {
                   </div>
                 )}
               </div>
-              <div className="flex gap-2">
+              <div className="flex gap-2 items-center">
                 <Input
                   value={chatMessage}
                   onChange={(e) => setChatMessage(e.target.value)}
                   placeholder="Type a message..."
-                  onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()}
+                  onKeyDown={(e) => e.key === "Enter" && handleSendMessage()}
                   disabled={!isConnected}
                 />
-                <Button 
-                  size="sm" 
-                  onClick={handleSendMessage} 
+                <Button
+                  size="sm"
+                  onClick={handleSendMessage}
                   disabled={!chatMessage.trim() || !isConnected}
                 >
                   <Send className="h-4 w-4" />
@@ -347,46 +396,44 @@ export default function AudioRoomDetailPage() {
       </div>
 
       {/* Audio Controls */}
-      <Card>
-        <CardContent className="pt-6">
-          <div className="flex items-center justify-center gap-4">
-            <Button
-              size="lg"
-              variant={isAudioEnabled ? (isMuted ? "destructive" : "default") : "outline"}
-              onClick={handleToggleAudio}
-              className="flex items-center gap-2"
-              disabled={!isConnected}
-            >
-              {!isAudioEnabled ? (
-                <>
-                  <Mic className="h-5 w-5" />
-                  Start Audio
-                </>
-              ) : isMuted ? (
-                <>
-                  <MicOff className="h-5 w-5" />
-                  Unmute
-                </>
-              ) : (
-                <>
-                  <Mic className="h-5 w-5" />
-                  Mute
-                </>
-              )}
-            </Button>
-            
-            <Button
-              size="lg"
-              variant="destructive"
-              onClick={handleLeaveRoom}
-              className="flex items-center gap-2"
-            >
-              <Phone className="h-5 w-5" />
-              Leave Room
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
+      <div className="flex items-center justify-center gap-4">
+        <Button
+          size="lg"
+          variant={
+            isAudioEnabled ? (isMuted ? "destructive" : "default") : "outline"
+          }
+          onClick={handleToggleAudio}
+          className="flex items-center gap-2"
+          disabled={!isConnected}
+        >
+          {!isAudioEnabled ? (
+            <>
+              <Mic className="h-5 w-5" />
+              Start Audio
+            </>
+          ) : isMuted ? (
+            <>
+              <MicOff className="h-5 w-5" />
+              Unmute
+            </>
+          ) : (
+            <>
+              <Mic className="h-5 w-5" />
+              Mute
+            </>
+          )}
+        </Button>
+
+        <Button
+          size="lg"
+          variant="destructive"
+          onClick={handleLeaveRoom}
+          className="flex items-center gap-2"
+        >
+          <Phone className="h-5 w-5" />
+          Leave Room
+        </Button>
+      </div>
     </div>
   );
 }
