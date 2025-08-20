@@ -3,7 +3,6 @@ import { api } from "@/lib/api";
 import { endpoints } from "@/lib/endpoints";
 import type { Tweet } from "@/types/tweet";
 import { Button } from "@/components/ui/button";
-import { Home } from "lucide-react";
 import FeedTweetItem from "@/components/tweet/FeedTweetItem";
 import CreateTweetDialog from "@/components/tweet/CreateTweetDialog";
 import FeedTweetItemSkeleton from "@/components/tweet/TweetSkeleton";
