@@ -71,22 +71,15 @@ export default function FloatingAudioRoom() {
 
             {/* Controls */}
             <div className="flex items-center justify-between gap-2">
-              <div className="flex items-center gap-2">
-                {isAudioEnabled && (
-                  <div className="flex items-center gap-1">
-                    {isMuted ? (
-                      <MicOff className="h-4 w-4 text-destructive" />
-                    ) : (
-                      <Mic className="h-4 w-4 text-green-500" />
-                    )}
-                    <span className="text-xs">
-                      {isMuted ? 'Muted' : 'Speaking'}
-                    </span>
-                  </div>
+              <div className="flex items-center gap-1">
+                {isMuted ? (
+                  <MicOff className="h-4 w-4 text-destructive" />
+                ) : (
+                  <Mic className="h-4 w-4 text-green-500" />
                 )}
-                {!isAudioEnabled && (
-                  <span className="text-xs text-muted-foreground">Listening</span>
-                )}
+                <span className="text-xs">
+                  {isMuted ? 'Muted' : 'Speaking'}
+                </span>
               </div>
 
               <Button

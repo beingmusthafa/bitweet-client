@@ -73,7 +73,7 @@ export default function AudioRoomDetailPage() {
   useEffect(() => {
     if (roomId && !connectionAttemptedRef.current) {
       console.log(
-        "🚀 [UI] useEffect triggered - attempting to connect to room:",
+        "[UI] useEffect triggered - attempting to connect to room:",
         roomId
       );
       connectionAttemptedRef.current = true;
@@ -83,13 +83,13 @@ export default function AudioRoomDetailPage() {
 
   useEffect(() => {
     return () => {
-      console.log("🧹 [UI] AudioRoomDetailPage cleanup - COMPONENT UNMOUNTING");
+      console.log("[UI] AudioRoomDetailPage cleanup - COMPONENT UNMOUNTING");
       console.log(
-        "🧹 [UI] This could be due to: navigation, browser refresh, or window close"
+        "[UI] This could be due to: navigation, browser refresh, or window close"
       );
       closeAllPeerConnections();
       stopAudioStream();
-      console.log("🧹 [UI] WebRTC and audio cleanup completed");
+      console.log("[UI] WebRTC and audio cleanup completed");
     };
   }, [closeAllPeerConnections, stopAudioStream]);
 
@@ -143,20 +143,18 @@ export default function AudioRoomDetailPage() {
 
   const handleLeaveRoom = async () => {
     try {
-      console.log(
-        "🚪 [UI] User clicked Leave Room button - USER INITIATED LEAVE"
-      );
-      console.log("🚪 [UI] Cleaning up WebRTC connections...");
+      console.log("[UI] User clicked Leave Room button - USER INITIATED LEAVE");
+      console.log("[UI] Cleaning up WebRTC connections...");
       closeAllPeerConnections();
-      console.log("🚪 [UI] Stopping audio stream...");
+      console.log("[UI] Stopping audio stream...");
       stopAudioStream();
-      console.log("🚪 [UI] Calling leaveRoom() function...");
+      console.log("[UI] Calling leaveRoom() function...");
       await leaveRoom();
-      console.log("🚪 [UI] Navigating back to room list...");
+      console.log("[UI] Navigating back to room list...");
       navigate("/audioroom");
     } catch (error) {
-      console.error("🚪 [UI] Failed to leave room:", error);
-      console.log("🚪 [UI] Navigating back anyway due to error...");
+      console.error("[UI] Failed to leave room:", error);
+      console.log("[UI] Navigating back anyway due to error...");
       navigate("/audioroom");
     }
   };
@@ -170,32 +168,36 @@ export default function AudioRoomDetailPage() {
       )
     ) {
       try {
-        console.log(
-          "🗑️ [UI] User confirmed room deletion - HOST DELETING ROOM"
-        );
-        console.log("🗑️ [UI] Room ID:", currentRoom.id);
+        console.log("[UI] User confirmed room deletion - HOST DELETING ROOM");
+        console.log("[UI] Room ID:", currentRoom.id);
         await deleteRoom(currentRoom.id);
-        console.log("🗑️ [UI] Room deleted successfully, navigating back...");
+        console.log("[UI] Room deleted successfully, navigating back...");
         navigate("/audioroom");
       } catch (error) {
-        console.error("🗑️ [UI] Failed to delete room:", error);
+        console.error("[UI] Failed to delete room:", error);
       }
     } else {
-      console.log("🗑️ [UI] User cancelled room deletion");
+      console.log("[UI] User cancelled room deletion");
     }
   };
 
-  const handleToggleAudio = async () => {
+  const handleToggleMute = async () => {
     try {
       if (!isAudioEnabled) {
         await startAudioStream();
-      } else {
-        toggleMute(currentUser?.id);
       }
+      toggleMute(currentUser?.id);
     } catch (error) {
-      console.error("Failed to toggle audio:", error);
+      console.error("Failed to toggle mute:", error);
     }
   };
+
+  // Auto-enable audio when connected
+  useEffect(() => {
+    if (isConnected && !isAudioEnabled && currentUser) {
+      startAudioStream().catch(console.error);
+    }
+  }, [isConnected, isAudioEnabled, currentUser, startAudioStream]);
 
   if (isLoading) {
     return (
@@ -399,19 +401,12 @@ export default function AudioRoomDetailPage() {
       <div className="flex items-center justify-center gap-4">
         <Button
           size="lg"
-          variant={
-            isAudioEnabled ? (isMuted ? "destructive" : "default") : "outline"
-          }
-          onClick={handleToggleAudio}
+          variant={isMuted ? "destructive" : "default"}
+          onClick={handleToggleMute}
           className="flex items-center gap-2"
           disabled={!isConnected}
         >
-          {!isAudioEnabled ? (
-            <>
-              <Mic className="h-5 w-5" />
-              Start Audio
-            </>
-          ) : isMuted ? (
+          {isMuted ? (
             <>
               <MicOff className="h-5 w-5" />
               Unmute

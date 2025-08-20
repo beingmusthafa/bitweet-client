@@ -37,7 +37,7 @@ export default function ProfilePage() {
       setLoading(true);
       setError(null);
       const response = await api.get<TweetsResponse>(
-        `${endpoints.getMyTweets}?page_number=${page}`,
+        `${endpoints.getMyTweets}?page_number=${page}`
       );
       const data = response.data;
 
@@ -79,7 +79,7 @@ export default function ProfilePage() {
 
   const updateTweet = async (
     id: string,
-    data: { text: string; isPrivate: boolean },
+    data: { text: string; isPrivate: boolean }
   ) => {
     try {
       console.log("Updating tweet:", id, data);
@@ -91,7 +91,7 @@ export default function ProfilePage() {
         const updated = prev.map((tweet) =>
           tweet.id === id
             ? { ...tweet, text: data.text, isPrivate: data.isPrivate }
-            : tweet,
+            : tweet
         );
         console.log("Updated tweets:", updated);
         return updated;

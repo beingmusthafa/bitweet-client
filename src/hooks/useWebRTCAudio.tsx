@@ -16,7 +16,7 @@ export const useWebRTCAudio = ({ sendWebSocketMessage }: UseWebRTCAudioProps) =>
   const peerConnectionsRef = useRef<Map<string, RTCPeerConnection>>(new Map());
   const remoteStreamsRef = useRef<Map<string, MediaStream>>(new Map());
   const audioAnalyzersRef = useRef<Map<string, AnalyserNode>>(new Map());
-  const [isMuted, setIsMuted] = useState(false);
+  const [isMuted, setIsMuted] = useState(true);
   const [isAudioEnabled, setIsAudioEnabled] = useState(false);
   const [participants, setParticipants] = useState<Map<string, AudioParticipant>>(new Map());
   const [audioLevels, setAudioLevels] = useState<Map<string, number>>(new Map());
@@ -27,7 +27,7 @@ export const useWebRTCAudio = ({ sendWebSocketMessage }: UseWebRTCAudioProps) =>
       const newParticipants = new Map(prev);
       newParticipants.set(user.id, {
         ...user,
-        isMuted: false,
+        isMuted: true,
         audioLevel: 0,
         isCreator
       });
@@ -42,7 +42,7 @@ export const useWebRTCAudio = ({ sendWebSocketMessage }: UseWebRTCAudioProps) =>
       existingUsers.forEach(user => {
         newParticipants.set(user.id, {
           ...user,
-          isMuted: false,
+          isMuted: true,
           audioLevel: 0,
           isCreator: user.id === creatorId
         });
@@ -233,6 +233,11 @@ export const useWebRTCAudio = ({ sendWebSocketMessage }: UseWebRTCAudioProps) =>
         video: false 
       });
       
+      // Start with tracks disabled since user starts muted
+      stream.getAudioTracks().forEach(track => {
+        track.enabled = false;
+      });
+      
       localStreamRef.current = stream;
       setIsAudioEnabled(true);
       
@@ -243,7 +248,7 @@ export const useWebRTCAudio = ({ sendWebSocketMessage }: UseWebRTCAudioProps) =>
         });
       });
 
-      console.log('Audio stream started');
+      console.log('Audio stream started (muted)');
       return stream;
     } catch (error) {
       console.error('Failed to start audio stream:', error);
@@ -265,10 +270,12 @@ export const useWebRTCAudio = ({ sendWebSocketMessage }: UseWebRTCAudioProps) =>
   const toggleMute = useCallback((currentUserId?: string) => {
     if (localStreamRef.current) {
       const audioTracks = localStreamRef.current.getAudioTracks();
+      const newMutedState = !isMuted;
+      
       audioTracks.forEach(track => {
-        track.enabled = !track.enabled;
+        track.enabled = !newMutedState;
       });
-      const newMutedState = !audioTracks[0]?.enabled;
+      
       setIsMuted(newMutedState);
       
       // Update participant mute status
@@ -278,8 +285,10 @@ export const useWebRTCAudio = ({ sendWebSocketMessage }: UseWebRTCAudioProps) =>
       
       // Broadcast mute status to other participants
       broadcastMuteStatus(newMutedState);
+      
+      console.log('Toggled mute:', newMutedState ? 'muted' : 'unmuted');
     }
-  }, [updateCurrentUserMuteStatus, broadcastMuteStatus]);
+  }, [isMuted, updateCurrentUserMuteStatus, broadcastMuteStatus]);
 
   // Handle WebRTC signaling
   const handleWebRTCSignal = useCallback(async (message: any) => {
@@ -338,7 +347,7 @@ export const useWebRTCAudio = ({ sendWebSocketMessage }: UseWebRTCAudioProps) =>
       const newParticipants = new Map(prev);
       newParticipants.set(user.id, {
         ...user,
-        isMuted: false,
+        isMuted: true,
         audioLevel: 0
       });
       return newParticipants;
@@ -497,7 +506,7 @@ export const useWebRTCAudio = ({ sendWebSocketMessage }: UseWebRTCAudioProps) =>
             if (!newParticipants.has(user.id)) {
               newParticipants.set(user.id, {
                 ...user,
-                isMuted: false,
+                isMuted: true,
                 audioLevel: 0,
                 isCreator: false // Will be updated when room data is available
               });
