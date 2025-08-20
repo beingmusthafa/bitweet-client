@@ -78,7 +78,7 @@ export default function AudioParticipants({
           const isSpeaking = audioLevel > 0.1;
 
           return (
-            <div key={participant.id} className="relative">
+            <div key={participant.id} className="relative size-32">
               {/* HOST Badge */}
               {isCreator && (
                 <div className="absolute -top-2 left-0 bg-green-600 text-white text-[0.5rem] font-bold px-2 py-1 rounded z-10">
@@ -89,10 +89,10 @@ export default function AudioParticipants({
               {/* Avatar Container */}
               <div>
                 <div
-                  className="relative w-20 h-20 bg-gray-700 flex items-center justify-center transition-all duration-150"
+                  className="relative size-32 bg-gray-700 flex items-center justify-center transition-all duration-150"
                   style={getBorderStyle(isCurrentUser, audioLevel, isCreator)}
                 >
-                  <User className="h-10 w-10 text-gray-400" />
+                  <User className="h-16 w-16 text-gray-400" />
                   {/* Mic Status */}
                   <div className="absolute -bottom-2 -right-2 bg-gray-800 p-1 border-2 border-gray-700">
                     {participant.isMuted ? (
