@@ -46,7 +46,7 @@ export function UserCardSkeleton() {
   return (
     <div className="flex items-center gap-3 p-3 bg-card justify-between px-8 w-full">
       <div className="flex items-center gap-4">
-        <Skeleton className="w-8 h-8 rounded-full" />
+        <Skeleton className="w-8 h-8" />
         <div className="flex-1 min-w-0 space-y-1">
           <Skeleton className="h-4 w-24" />
           <Skeleton className="h-3 w-20" />
