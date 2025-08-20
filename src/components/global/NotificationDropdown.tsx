@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Badge } from "@/components/ui/badge";
@@ -12,7 +13,7 @@ import { useAppSelector } from "@/store/hooks";
 export default function NotificationDropdown() {
   const navigate = useNavigate();
   const { unreadNotifications } = useAppSelector(
-    (state) => state.notifications,
+    (state) => state.notifications
   );
 
   return (
@@ -34,9 +35,7 @@ export default function NotificationDropdown() {
         className="w-96 min-h-[300px] bg-background/95 backdrop-blur-sm border shadow-lg"
       >
         <div className="p-4 border-b">
-          <h3 className="font-semibold text-foreground">
-            Notifications
-          </h3>
+          <h3 className="font-semibold text-foreground">Notifications</h3>
         </div>
 
         <div className="min-h-64 overflow-y-auto">
@@ -57,14 +56,15 @@ export default function NotificationDropdown() {
                         {notification.message}
                       </div>
                       <div className="text-xs text-muted-foreground">
-                        {new Date(
-                          notification.created_at,
-                        ).toLocaleDateString("en-US", {
-                          month: "short",
-                          day: "numeric",
-                          hour: "2-digit",
-                          minute: "2-digit",
-                        })}
+                        {new Date(notification.created_at).toLocaleDateString(
+                          "en-US",
+                          {
+                            month: "short",
+                            day: "numeric",
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          }
+                        )}
                       </div>
                     </div>
                   </div>
@@ -73,8 +73,7 @@ export default function NotificationDropdown() {
 
               {unreadNotifications.length > 5 && (
                 <div className="px-4 py-3 text-center text-sm text-muted-foreground border-b border-muted/30">
-                  {unreadNotifications.length - 5} more unread
-                  notifications
+                  {unreadNotifications.length - 5} more unread notifications
                 </div>
               )}
             </div>
@@ -91,7 +90,7 @@ export default function NotificationDropdown() {
           )}
         </div>
 
-        <div className=" border-t bg-muted/20">
+        <DropdownMenuItem className=" border-t bg-muted/20">
           <Button
             variant="ghost"
             size="sm"
@@ -100,7 +99,7 @@ export default function NotificationDropdown() {
           >
             View all notifications
           </Button>
-        </div>
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );
