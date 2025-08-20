@@ -33,7 +33,7 @@ export default function App() {
               </ProtectedRoute>
             }
           >
-            <Route index element={<Navigate to="/profile" replace />} />
+            <Route index element={<Navigate to="/feed" replace />} />
             <Route path="profile" element={<ProfilePage />} />
             <Route path="people" element={<PeoplePage />} />
             <Route path="feed" element={<FeedPage />} />
@@ -41,7 +41,7 @@ export default function App() {
             <Route path="audioroom" element={<AudioRoomPage />} />
             <Route path="audioroom/:roomId" element={<AudioRoomDetailPage />} />
           </Route>
-          <Route path="*" element={<Navigate to="/profile" replace />} />
+          <Route path="*" element={<Navigate to="/feed" replace />} />
         </Routes>
       </Router>
     </Provider>

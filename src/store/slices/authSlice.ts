@@ -15,12 +15,16 @@ interface User {
 interface AuthState {
   user: User | null;
   isLoading: boolean;
+  isLoginLoading: boolean;
+  isRegisterLoading: boolean;
   error: string | null;
 }
 
 const initialState: AuthState = {
   user: null,
   isLoading: true,
+  isLoginLoading: false,
+  isRegisterLoading: false,
   error: null,
 };
 
@@ -113,27 +117,29 @@ const authSlice = createSlice({
         state.isLoading = false;
       })
       .addCase(login.pending, (state) => {
-        state.isLoading = true;
+        state.isLoginLoading = true;
         state.error = null;
       })
       .addCase(login.fulfilled, (state, action: PayloadAction<User>) => {
+        state.isLoginLoading = false;
         state.isLoading = false;
         state.user = action.payload;
       })
       .addCase(login.rejected, (state, action) => {
-        state.isLoading = false;
+        state.isLoginLoading = false;
         state.error = action.payload as string;
       })
       .addCase(register.pending, (state) => {
-        state.isLoading = true;
+        state.isRegisterLoading = true;
         state.error = null;
       })
       .addCase(register.fulfilled, (state, action: PayloadAction<User>) => {
+        state.isRegisterLoading = false;
         state.isLoading = false;
         state.user = action.payload;
       })
       .addCase(register.rejected, (state, action) => {
-        state.isLoading = false;
+        state.isRegisterLoading = false;
         state.error = action.payload as string;
       })
       .addCase(logout.fulfilled, (state) => {

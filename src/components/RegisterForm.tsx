@@ -29,7 +29,7 @@ import { useAppDispatch, useAppSelector } from "@/store/hooks";
 export default function RegisterForm() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { isLoading, error, user } = useAppSelector((state) => state.auth);
+  const { isRegisterLoading, error, user } = useAppSelector((state) => state.auth);
 
   const form = useForm<RegisterFormData>({
     resolver: zodResolver(registerSchema),
@@ -140,8 +140,8 @@ export default function RegisterForm() {
               </div>
             )}
 
-            <Button type="submit" className="w-full" disabled={isLoading}>
-              {isLoading ? "Creating account..." : "Create account"}
+            <Button type="submit" className="w-full" disabled={isRegisterLoading}>
+              {isRegisterLoading ? "Creating account..." : "Create account"}
             </Button>
           </form>
         </Form>

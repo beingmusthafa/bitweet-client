@@ -26,7 +26,7 @@ import { clearError, login } from "../store/slices/authSlice";
 export default function LoginForm() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { isLoading, error, user } = useAppSelector((state) => state.auth);
+  const { isLoginLoading, error, user } = useAppSelector((state) => state.auth);
 
   const form = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
@@ -106,8 +106,8 @@ export default function LoginForm() {
               </div>
             )}
 
-            <Button type="submit" className="w-full" disabled={isLoading}>
-              {isLoading ? "Signing in..." : "Sign in"}
+            <Button type="submit" className="w-full" disabled={isLoginLoading}>
+              {isLoginLoading ? "Signing in..." : "Sign in"}
             </Button>
           </form>
         </Form>
