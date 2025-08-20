@@ -1,12 +1,12 @@
-import { useSelector } from 'react-redux';
-import { useNavigate, useLocation } from 'react-router-dom';
-import type { RootState } from '../../store';
-import { useAudioRoom } from '../../hooks/useAudioRoom';
-import { useWebRTCAudio } from '../../hooks/useWebRTCAudio';
-import { Button } from '../ui/button';
-import { Card, CardContent } from '../ui/card';
-import { Badge } from '../ui/badge';
-import { Mic, MicOff, Phone, Maximize2, Users } from 'lucide-react';
+import { useSelector } from "react-redux";
+import { useNavigate, useLocation } from "react-router-dom";
+import type { RootState } from "../../store";
+import { useAudioRoom } from "../../hooks/useAudioRoom";
+import { useWebRTCAudio } from "../../hooks/useWebRTCAudio";
+import { Button } from "../ui/button";
+import { Card, CardContent } from "../ui/card";
+import { Badge } from "../ui/badge";
+import { Mic, MicOff, Phone, Maximize2, Users } from "lucide-react";
 
 export default function FloatingAudioRoom() {
   const navigate = useNavigate();
@@ -15,12 +15,16 @@ export default function FloatingAudioRoom() {
     (state: RootState) => state.audioroom
   );
   const { leaveRoom, sendWebSocketMessage } = useAudioRoom();
-  const { participants, isMuted, isAudioEnabled } = useWebRTCAudio({
+  const { participants, isMuted } = useWebRTCAudio({
     sendWebSocketMessage,
   });
 
   // Don't show floating window if user is already on audioroom pages or not in a room
-  if (!currentRoom || !isConnected || location.pathname.startsWith('/audioroom')) {
+  if (
+    !currentRoom ||
+    !isConnected ||
+    location.pathname.startsWith("/audioroom")
+  ) {
     return null;
   }
 
@@ -32,7 +36,7 @@ export default function FloatingAudioRoom() {
     try {
       await leaveRoom();
     } catch (error) {
-      console.error('Failed to leave room:', error);
+      console.error("Failed to leave room:", error);
     }
   };
 
@@ -44,11 +48,17 @@ export default function FloatingAudioRoom() {
             {/* Header */}
             <div className="flex items-start justify-between">
               <div className="flex-1 min-w-0">
-                <h3 className="font-semibold text-sm truncate" title={currentRoom.title}>
+                <h3
+                  className="font-semibold text-sm truncate"
+                  title={currentRoom.title}
+                >
                   {currentRoom.title}
                 </h3>
                 <div className="flex items-center gap-2 mt-1">
-                  <Badge variant={isConnected ? "default" : "secondary"} className="text-xs">
+                  <Badge
+                    variant={isConnected ? "default" : "secondary"}
+                    className="text-xs"
+                  >
                     {isConnected ? "Connected" : "Connecting..."}
                   </Badge>
                 </div>
@@ -78,7 +88,7 @@ export default function FloatingAudioRoom() {
                   <Mic className="h-4 w-4 text-green-500" />
                 )}
                 <span className="text-xs">
-                  {isMuted ? 'Muted' : 'Speaking'}
+                  {isMuted ? "Muted" : "Speaking"}
                 </span>
               </div>
 

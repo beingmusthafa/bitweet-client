@@ -50,8 +50,6 @@ export default function AudioRoomDetailPage() {
     stopAudioStream,
     toggleMute,
     closeAllPeerConnections,
-    handleUserJoined,
-    handleUserLeft,
     isMuted,
     isAudioEnabled,
     participants,

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Bell, Loader2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { api } from "@/lib/api";
 
 interface Notification {
@@ -32,7 +32,7 @@ export default function NotificationsPage() {
       setIsLoading(true);
       setError(null);
       const response = await api.get<NotificationsResponse>(
-        `/notifications?page=${page}`,
+        `/notifications?page=${page}`
       );
 
       if (page === 1) {
@@ -58,7 +58,7 @@ export default function NotificationsPage() {
 
   useEffect(() => {
     const hasUnreadNotifications = allNotifications.some(
-      (notification) => !notification.is_read,
+      (notification) => !notification.is_read
     );
     if (hasUnreadNotifications) {
       api.patch("/notifications/mark-all-read").catch(() => {});
@@ -140,7 +140,9 @@ export default function NotificationsPage() {
           {allNotifications.map((notification) => (
             <Card
               key={notification.id}
-              className={`py-3 rounded-none border-0 ${!notification.is_read ? "opacity-80" : "bg-card"}`}
+              className={`py-3 rounded-none border-0 ${
+                !notification.is_read ? "opacity-80" : "bg-card"
+              }`}
             >
               <CardContent className="p-3 py-0">
                 <div className="flex items-start justify-between gap-2">

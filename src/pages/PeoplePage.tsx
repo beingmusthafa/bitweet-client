@@ -3,7 +3,7 @@ import { api } from "@/lib/api";
 import { endpoints } from "@/lib/endpoints";
 import type { User } from "@/types/user";
 import { Button } from "@/components/ui/button";
-import { Users, UserPlus } from "lucide-react";
+import { UserPlus } from "lucide-react";
 import UserAvatar from "@/components/global/UserAvatar";
 
 interface PeopleResponse {
@@ -16,7 +16,6 @@ interface PeopleResponse {
 
 export default function PeoplePage() {
   const [users, setUsers] = useState<User[]>([]);
-  const [loading, setLoading] = useState(false);
   const [loadingMore, setLoadingMore] = useState(false);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
@@ -24,9 +23,6 @@ export default function PeoplePage() {
 
   const fetchUsers = async (pageNum: number, append = false) => {
     try {
-      if (pageNum === 1) setLoading(true);
-      else setLoadingMore(true);
-
       const response = await api.get<PeopleResponse>(endpoints.getPeople, {
         params: { page_number: pageNum, page_size: 20 },
       });
@@ -43,7 +39,6 @@ export default function PeoplePage() {
     } catch (error) {
       console.error("Failed to fetch users:", error);
     } finally {
-      setLoading(false);
       setLoadingMore(false);
     }
   };
