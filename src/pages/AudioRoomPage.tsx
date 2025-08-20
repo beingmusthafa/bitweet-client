@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAudioRoom } from "../hooks/useAudioRoom";
 import { Button } from "../components/ui/button";
-import { Card, CardContent, CardHeader } from "../components/ui/card";
 import {
   Dialog,
   DialogContent,
@@ -15,31 +13,49 @@ import { Label } from "../components/ui/label";
 import { Mic, Plus } from "lucide-react";
 import type { AudioRoom } from "../types/audioroom";
 import AudioRoomCard from "../components/audioroom/AudioRoomCard";
+import { api } from "../lib/api";
+import AudioRoomCardSkeleton from "@/components/audioroom/AudioRoomSkeleton";
 
 export default function AudioRoomPage() {
   const navigate = useNavigate();
-  const { activeRooms, isLoading, error, fetchActiveRooms, createRoom } =
-    useAudioRoom();
-
+  const [activeRooms, setActiveRooms] = useState<AudioRoom[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
   const [newRoomTitle, setNewRoomTitle] = useState("");
   const [isCreating, setIsCreating] = useState(false);
 
+  const fetchActiveRooms = async () => {
+    try {
+      setIsLoading(true);
+      setError(null);
+      const response = await api.get("/api/rooms/active");
+      setActiveRooms(response.data.rooms);
+    } catch (error: any) {
+      setError(error.response?.data?.detail || "Failed to fetch rooms");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   useEffect(() => {
     fetchActiveRooms();
-  }, [fetchActiveRooms]);
+  }, []);
 
   const handleCreateRoom = async () => {
     if (!newRoomTitle.trim()) return;
 
     try {
       setIsCreating(true);
-      const room = await createRoom(newRoomTitle.trim());
+      const response = await api.post("/api/rooms/", {
+        title: newRoomTitle.trim(),
+      });
       setNewRoomTitle("");
       setIsCreateDialogOpen(false);
-      navigate(`/audioroom/${room.id}`);
-    } catch (error) {
-      console.error("Failed to create room:", error);
+      await fetchActiveRooms();
+      navigate(`/audioroom/${response.data.id}`);
+    } catch (error: any) {
+      setError(error.response?.data?.detail || "Failed to create room");
     } finally {
       setIsCreating(false);
     }
@@ -48,30 +64,6 @@ export default function AudioRoomPage() {
   const handleJoinRoom = (room: AudioRoom) => {
     navigate(`/audioroom/${room.id}`);
   };
-
-  if (isLoading && activeRooms.length === 0) {
-    return (
-      <div className="space-y-6">
-        <div className="flex items-center justify-between">
-          <h1 className="text-3xl font-bold">Audio Rooms</h1>
-        </div>
-        <div className="grid gap-4 md:grid-cols-2">
-          {[...Array(6)].map((_, i) => (
-            <Card key={i} className="animate-pulse">
-              <CardHeader>
-                <div className="h-6 bg-muted rounded w-3/4"></div>
-                <div className="h-4 bg-muted rounded w-1/2"></div>
-              </CardHeader>
-              <CardContent>
-                <div className="h-4 bg-muted rounded w-full mb-2"></div>
-                <div className="h-10 bg-muted rounded"></div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="space-y-6 px-6">
@@ -137,13 +129,17 @@ export default function AudioRoomPage() {
         </div>
       ) : (
         <div className="grid gap-4 md:grid-cols-2">
-          {activeRooms.map((room) => (
-            <AudioRoomCard
-              key={room.id}
-              room={room}
-              onJoinRoom={handleJoinRoom}
-            />
-          ))}
+          {isLoading
+            ? new Array(4)
+                .fill(0)
+                .map((_, index) => <AudioRoomCardSkeleton key={index} />)
+            : activeRooms.map((room) => (
+                <AudioRoomCard
+                  key={room.id}
+                  room={room}
+                  onJoinRoom={handleJoinRoom}
+                />
+              ))}
         </div>
       )}
 

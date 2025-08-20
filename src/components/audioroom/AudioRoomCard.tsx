@@ -6,17 +6,20 @@ interface AudioRoomCardProps {
   onJoinRoom: (room: AudioRoom) => void;
 }
 
-export default function AudioRoomCard({ room, onJoinRoom }: AudioRoomCardProps) {
+export default function AudioRoomCard({
+  room,
+  onJoinRoom,
+}: AudioRoomCardProps) {
   const formatTimeAgo = (dateString: string) => {
     const date = new Date(dateString);
     const now = new Date();
     const diffInHours = Math.floor(
-      (now.getTime() - date.getTime()) / (1000 * 60 * 60),
+      (now.getTime() - date.getTime()) / (1000 * 60 * 60)
     );
 
     if (diffInHours < 1) {
       const diffInMinutes = Math.floor(
-        (now.getTime() - date.getTime()) / (1000 * 60),
+        (now.getTime() - date.getTime()) / (1000 * 60)
       );
       return `${diffInMinutes}m ago`;
     } else if (diffInHours < 24) {
@@ -28,19 +31,20 @@ export default function AudioRoomCard({ room, onJoinRoom }: AudioRoomCardProps) 
   };
 
   return (
-    <div
-      key={room.id}
-      className="bg-card border border-gray-700 p-6 hover:border-accent/500 transition-colors"
-    >
+    <div key={room.id} className="bg-card border border-gray-700 p-6">
       <div className="flex items-start justify-between mb-4">
         <div className="flex-1">
           <div className="flex items-center gap-3 mb-2">
             <div className="flex items-center gap-2">
               <div
-                className={`w-2 h-2 ${room.is_live ? "bg-red-500 animate-pulse" : "bg-gray-500"}`}
+                className={`w-2 h-2 ${
+                  room.is_live ? "bg-red-500 animate-pulse" : "bg-gray-500"
+                }`}
               ></div>
               <span
-                className={`text-sm font-semibold ${room.is_live ? "text-red-400" : "text-gray-400"}`}
+                className={`text-sm font-semibold ${
+                  room.is_live ? "text-red-400" : "text-gray-400"
+                }`}
               >
                 {room.is_live ? "LIVE" : "NOT STARTED"}
               </span>

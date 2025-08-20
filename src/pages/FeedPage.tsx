@@ -3,9 +3,9 @@ import { api } from "@/lib/api";
 import { endpoints } from "@/lib/endpoints";
 import type { Tweet } from "@/types/tweet";
 import { Button } from "@/components/ui/button";
-import { Home } from "lucide-react";
 import FeedTweetItem from "@/components/tweet/FeedTweetItem";
 import CreateTweetDialog from "@/components/tweet/CreateTweetDialog";
+import FeedTweetItemSkeleton from "@/components/tweet/TweetSkeleton";
 
 interface FeedResponse {
   tweets: Tweet[];
@@ -58,20 +58,6 @@ export default function FeedPage() {
     fetchTweets(1);
   }, []);
 
-  if (loading) {
-    return (
-      <div className="space-y-4">
-        <div className="flex items-center gap-2 mb-6">
-          <Home className="h-6 w-6" />
-          <h1 className="text-2xl font-bold">Feed</h1>
-        </div>
-        <div className="flex justify-center py-8">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-        </div>
-      </div>
-    );
-  }
-
   const handleTweetCreated = () => {
     setPage(1);
     fetchTweets(1);
@@ -79,9 +65,13 @@ export default function FeedPage() {
 
   return (
     <div className="space-y-4">
-      {tweets.length === 0 ? (
+      {loading ? (
+        new Array(5).fill(0).map((_, i) => <FeedTweetItemSkeleton key={i} />)
+      ) : tweets.length === 0 ? (
         <div className="text-center py-8">
-          <p className="text-muted-foreground">No tweets in your feed yet!</p>
+          <p className="text-muted-foreground text-center mt-[20vh]">
+            No tweets in your feed yet!
+          </p>
         </div>
       ) : (
         <>

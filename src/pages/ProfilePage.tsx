@@ -6,12 +6,13 @@ import { useState, useEffect } from "react";
 
 import UserAvatar from "@/components/global/UserAvatar";
 import TweetItem from "@/components/tweet/TweetItem";
-import UsersList from "@/components/connections/UsersList";
+import UsersList from "@/components/profile/UsersList";
 import { useFollowers, useFollowing } from "@/hooks/useConnections";
 import { api } from "@/lib/api";
 import { endpoints } from "@/lib/endpoints";
 import type { User } from "@/types/user";
 import type { Tweet, TweetsResponse } from "@/types/tweet";
+import FeedTweetItemSkeleton from "@/components/tweet/TweetSkeleton";
 
 export default function ProfilePage() {
   const { user } = useAppSelector((state) => state.auth);
@@ -141,16 +142,18 @@ export default function ProfilePage() {
 
         <TabsContent value="tweets" className="mt-6">
           {loading && tweets.length === 0 ? (
-            <div className="flex justify-center py-8">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-            </div>
+            new Array(4)
+              .fill(0)
+              .map((_, i) => <FeedTweetItemSkeleton key={i} />)
           ) : error && tweets.length === 0 ? (
             <div className="text-center py-8">
               <p className="text-red-600">{error}</p>
             </div>
           ) : tweets.length === 0 ? (
             <div className="text-center py-8">
-              <p className="text-muted-foreground">No tweets yet!</p>
+              <p className="text-muted-foreground text-center">
+                No tweets yet!
+              </p>
             </div>
           ) : (
             <div>
