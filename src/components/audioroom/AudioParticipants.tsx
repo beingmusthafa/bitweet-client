@@ -30,10 +30,18 @@ export default function AudioParticipants({
   };
 
   const getBorderStyle = (
-    userId: string,
+    isCurrentUser: boolean,
     audioLevel: number,
     isCreator: boolean
   ) => {
+    if (isCurrentUser) {
+      return {
+        borderWidth: "3px",
+        borderColor: "rgb(255, 255, 255)", // White border for current user
+        boxShadow: "0 0 8px rgba(255, 255, 255, 0.3)",
+      };
+    }
+
     if (isCreator) {
       return {
         borderWidth: "3px",
@@ -73,7 +81,7 @@ export default function AudioParticipants({
             <div key={participant.id} className="relative">
               {/* HOST Badge */}
               {isCreator && (
-                <div className="absolute -top-2 left-0 bg-purple-600 text-white text-[0.5rem] font-bold px-2 py-1 rounded z-10">
+                <div className="absolute -top-2 left-0 bg-green-600 text-white text-[0.5rem] font-bold px-2 py-1 rounded z-10">
                   HOST
                 </div>
               )}
@@ -82,7 +90,7 @@ export default function AudioParticipants({
               <div>
                 <div
                   className="relative w-20 h-20 bg-gray-700 flex items-center justify-center transition-all duration-150"
-                  style={getBorderStyle(participant.id, audioLevel, isCreator)}
+                  style={getBorderStyle(isCurrentUser, audioLevel, isCreator)}
                 >
                   <User className="h-10 w-10 text-gray-400" />
                   {/* Mic Status */}
@@ -102,7 +110,7 @@ export default function AudioParticipants({
                   className="font-medium text-sm text-white truncate"
                   title={participant.fullName}
                 >
-                  {isCurrentUser ? "You" : participant.fullName}
+                  {participant.fullName}
                 </p>
                 <p
                   className="text-xs text-gray-400 truncate"
