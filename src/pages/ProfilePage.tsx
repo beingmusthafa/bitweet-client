@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 
 import UserAvatar from "@/components/global/UserAvatar";
 import TweetItem from "@/components/tweet/TweetItem";
-import UsersList from "@/components/connections/UsersList";
+import UsersList from "@/components/profile/UsersList";
 import { useFollowers, useFollowing } from "@/hooks/useConnections";
 import { api } from "@/lib/api";
 import { endpoints } from "@/lib/endpoints";

@@ -3,8 +3,7 @@ import { api } from "@/lib/api";
 import { endpoints } from "@/lib/endpoints";
 import type { User } from "@/types/user";
 import { Button } from "@/components/ui/button";
-import { UserPlus } from "lucide-react";
-import UserAvatar from "@/components/global/UserAvatar";
+import { UserCard, UserCardSkeleton } from "@/components/connections/UserCard";
 
 interface PeopleResponse {
   users: User[];
@@ -16,9 +15,10 @@ interface PeopleResponse {
 
 export default function PeoplePage() {
   const [users, setUsers] = useState<User[]>([]);
+  const [initialLoading, setInitialLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
   const [page, setPage] = useState(1);
-  const [hasMore, setHasMore] = useState(true);
+  const [hasMore, setHasMore] = useState(false);
   const [followingUsers, setFollowingUsers] = useState<Set<string>>(new Set());
 
   const fetchUsers = async (pageNum: number, append = false) => {
@@ -40,6 +40,7 @@ export default function PeoplePage() {
       console.error("Failed to fetch users:", error);
     } finally {
       setLoadingMore(false);
+      if (!append) setInitialLoading(false);
     }
   };
 
@@ -70,35 +71,19 @@ export default function PeoplePage() {
   return (
     <div className="space-y-4  mx-auto md:w-1/2">
       <div className="space-y-2 flex flex-col items-center w-full">
-        {users.length === 0 ? (
+        {initialLoading ? (
+          new Array(7)
+            .fill(0)
+            .map((_, index) => <UserCardSkeleton key={index} />)
+        ) : users.length === 0 ? (
           <p className="text-muted-foreground my-32">No users to show</p>
         ) : (
           users.map((user) => (
-            <div
-              key={user.id}
-              className="flex items-center gap-3 p-3 bg-card justify-between px-8 w-full"
-            >
-              <div className="flex items-center gap-4">
-                <UserAvatar size="sm" />
-                <div className="flex-1 min-w-0">
-                  <p className="font-medium text-card-foreground truncate text-sm">
-                    {user.fullName}
-                  </p>
-                  <p className="text-xs text-start text-muted-foreground truncate">
-                    @{user.username}
-                  </p>
-                </div>
-              </div>
-              <Button
-                size="sm"
-                onClick={() => handleFollow(user.id)}
-                disabled={followingUsers.has(user.id)}
-                className="text-xs px-3 py-1 h-7"
-              >
-                <UserPlus className="h-3 w-3" />
-                {followingUsers.has(user.id) ? "Following" : "Follow"}
-              </Button>
-            </div>
+            <UserCard
+              isFollowing={followingUsers.has(user.id)}
+              onFollow={handleFollow}
+              user={user}
+            />
           ))
         )}
       </div>
