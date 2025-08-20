@@ -3,7 +3,7 @@ import { api } from "@/lib/api";
 import { endpoints } from "@/lib/endpoints";
 import type { User } from "@/types/user";
 import { Button } from "@/components/ui/button";
-import { Users, UserPlus } from "lucide-react";
+import { UserPlus } from "lucide-react";
 import UserAvatar from "@/components/global/UserAvatar";
 
 interface PeopleResponse {
@@ -16,7 +16,6 @@ interface PeopleResponse {
 
 export default function PeoplePage() {
   const [users, setUsers] = useState<User[]>([]);
-  const [loading, setLoading] = useState(false);
   const [loadingMore, setLoadingMore] = useState(false);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
@@ -24,9 +23,6 @@ export default function PeoplePage() {
 
   const fetchUsers = async (pageNum: number, append = false) => {
     try {
-      if (pageNum === 1) setLoading(true);
-      else setLoadingMore(true);
-
       const response = await api.get<PeopleResponse>(endpoints.getPeople, {
         params: { page_number: pageNum, page_size: 20 },
       });
@@ -43,7 +39,6 @@ export default function PeoplePage() {
     } catch (error) {
       console.error("Failed to fetch users:", error);
     } finally {
-      setLoading(false);
       setLoadingMore(false);
     }
   };
@@ -72,25 +67,8 @@ export default function PeoplePage() {
     fetchUsers(1);
   }, []);
 
-  if (loading) {
-    return (
-      <div className="space-y-4">
-        <div className="flex items-center gap-2 mb-6">
-          <Users className="h-6 w-6" />
-          <h1 className="text-2xl font-bold">Follow Users</h1>
-        </div>
-        <div className="text-center py-8">Loading...</div>
-      </div>
-    );
-  }
-
   return (
-    <div className="space-y-4 max-w-2xl mx-auto">
-      <div className="flex items-center gap-2 mb-6">
-        <Users className="h-6 w-6" />
-        <h1 className="text-2xl font-bold">Follow Users</h1>
-      </div>
-
+    <div className="space-y-4  mx-auto md:w-1/2">
       <div className="space-y-2 flex flex-col items-center w-full">
         {users.length === 0 ? (
           <p className="text-muted-foreground my-32">No users to show</p>
@@ -98,7 +76,7 @@ export default function PeoplePage() {
           users.map((user) => (
             <div
               key={user.id}
-              className="flex items-center gap-3 p-3 bg-card rounded-lg border border-border justify-between px-8 w-full"
+              className="flex items-center gap-3 p-3 bg-card justify-between px-8 w-full"
             >
               <div className="flex items-center gap-4">
                 <UserAvatar size="sm" />

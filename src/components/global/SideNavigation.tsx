@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import { User, Users, Home, Bell, Radio } from "lucide-react";
+import { User, Users, Home, Bell, Radio, Terminal } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const navigationItems = [
@@ -32,27 +32,31 @@ const navigationItems = [
 
 export default function SideNavigation() {
   return (
-    <nav className="border-r border-sidebar-border p-2 sticky top-24 h-full">
-      <ul>
-        {navigationItems.map((item) => (
-          <li key={item.name}>
-            <NavLink
-              to={item.href}
-              className={({ isActive }) =>
-                cn(
-                  "flex border-t first:border-t-0 border-border items-center gap-3 px-3 py-4 text-sm font-medium rounded-md transition-colors",
-                  isActive
-                    ? "bg-primary text-secondary"
-                    : "text-sidebar-foreground hover:bg-sidebar-accent",
-                )
-              }
-            >
-              <item.icon className="h-4 w-4" />
-              {item.name}
-            </NavLink>
-          </li>
+    <div className="fixed left-0 top-0 h-full w-64 bg-gray-800 border-r border-gray-700 p-4">
+      <div className="flex items-center gap-2 mb-8">
+        <Terminal className="w-8 h-8 text-accent/70" />
+        <h1 className="text-xl font-bold text-white">Bitweet</h1>
+      </div>
+
+      <nav className="space-y-2 divide-y divide-accent/50">
+        {navigationItems.map(({ icon: Icon, name, href }) => (
+          <NavLink
+            key={name}
+            to={href}
+            className={({ isActive }) =>
+              cn(
+                "flex items-center gap-3 px-3 py-4 text-sm font-medium transition-colors",
+                isActive
+                  ? "bg-accent text-white"
+                  : "text-sidebar-foreground hover:bg-sidebar-accent",
+              )
+            }
+          >
+            <Icon className="w-5 h-5" />
+            {name}
+          </NavLink>
         ))}
-      </ul>
-    </nav>
+      </nav>
+    </div>
   );
 }

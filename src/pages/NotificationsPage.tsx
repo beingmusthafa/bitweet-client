@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Bell, Loader2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { api } from "@/lib/api";
 
 interface Notification {
@@ -32,7 +32,7 @@ export default function NotificationsPage() {
       setIsLoading(true);
       setError(null);
       const response = await api.get<NotificationsResponse>(
-        `/notifications?page=${page}`,
+        `/notifications?page=${page}`
       );
 
       if (page === 1) {
@@ -58,7 +58,7 @@ export default function NotificationsPage() {
 
   useEffect(() => {
     const hasUnreadNotifications = allNotifications.some(
-      (notification) => !notification.is_read,
+      (notification) => !notification.is_read
     );
     if (hasUnreadNotifications) {
       api.patch("/notifications/mark-all-read").catch(() => {});
@@ -95,7 +95,7 @@ export default function NotificationsPage() {
 
   if (error) {
     return (
-      <div className="max-w-2xl mx-auto p-6">
+      <div className=" mx-auto p-6">
         <Card>
           <CardContent className="p-6 text-center">
             <div className="text-destructive">
@@ -111,12 +111,8 @@ export default function NotificationsPage() {
   }
 
   return (
-    <div className="max-w-2xl mx-auto">
+    <div className="w-3/4 mx-auto">
       <div className="flex justify-between items-center mb-6">
-        <div className="flex items-center gap-2 mb-6">
-          <Bell className="h-6 w-6" />
-          <h1 className="text-2xl font-bold">Notifications</h1>
-        </div>
         <Button
           variant="outline"
           onClick={handleClearNotifications}
@@ -140,11 +136,13 @@ export default function NotificationsPage() {
           </CardContent>
         </Card>
       ) : (
-        <div className="space-y-4">
+        <div className="space-y-2 flex flex-col">
           {allNotifications.map((notification) => (
             <Card
               key={notification.id}
-              className={`py-3 ${!notification.is_read ? "border-l-4 border-border/50" : "bg-muted/80"}`}
+              className={`py-3 rounded-none border-0 ${
+                !notification.is_read ? "opacity-80" : "bg-card"
+              }`}
             >
               <CardContent className="p-3 py-0">
                 <div className="flex items-start justify-between gap-2">

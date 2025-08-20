@@ -1,27 +1,28 @@
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useAudioRoom } from '../hooks/useAudioRoom';
-import { Button } from '../components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../components/ui/dialog';
-import { Input } from '../components/ui/input';
-import { Label } from '../components/ui/label';
-import { Badge } from '../components/ui/badge';
-import { Mic, Users, Plus, Clock } from 'lucide-react';
-import type { AudioRoom } from '../types/audioroom';
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAudioRoom } from "../hooks/useAudioRoom";
+import { Button } from "../components/ui/button";
+import { Card, CardContent, CardHeader } from "../components/ui/card";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "../components/ui/dialog";
+import { Input } from "../components/ui/input";
+import { Label } from "../components/ui/label";
+import { Mic, Plus } from "lucide-react";
+import type { AudioRoom } from "../types/audioroom";
+import AudioRoomCard from "../components/audioroom/AudioRoomCard";
 
 export default function AudioRoomPage() {
   const navigate = useNavigate();
-  const {
-    activeRooms,
-    isLoading,
-    error,
-    fetchActiveRooms,
-    createRoom,
-  } = useAudioRoom();
+  const { activeRooms, isLoading, error, fetchActiveRooms, createRoom } =
+    useAudioRoom();
 
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
-  const [newRoomTitle, setNewRoomTitle] = useState('');
+  const [newRoomTitle, setNewRoomTitle] = useState("");
   const [isCreating, setIsCreating] = useState(false);
 
   useEffect(() => {
@@ -30,15 +31,15 @@ export default function AudioRoomPage() {
 
   const handleCreateRoom = async () => {
     if (!newRoomTitle.trim()) return;
-    
+
     try {
       setIsCreating(true);
       const room = await createRoom(newRoomTitle.trim());
-      setNewRoomTitle('');
+      setNewRoomTitle("");
       setIsCreateDialogOpen(false);
       navigate(`/audioroom/${room.id}`);
     } catch (error) {
-      console.error('Failed to create room:', error);
+      console.error("Failed to create room:", error);
     } finally {
       setIsCreating(false);
     }
@@ -48,29 +49,13 @@ export default function AudioRoomPage() {
     navigate(`/audioroom/${room.id}`);
   };
 
-  const formatTimeAgo = (dateString: string) => {
-    const date = new Date(dateString);
-    const now = new Date();
-    const diffInHours = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60));
-    
-    if (diffInHours < 1) {
-      const diffInMinutes = Math.floor((now.getTime() - date.getTime()) / (1000 * 60));
-      return `${diffInMinutes}m ago`;
-    } else if (diffInHours < 24) {
-      return `${diffInHours}h ago`;
-    } else {
-      const diffInDays = Math.floor(diffInHours / 24);
-      return `${diffInDays}d ago`;
-    }
-  };
-
   if (isLoading && activeRooms.length === 0) {
     return (
       <div className="space-y-6">
         <div className="flex items-center justify-between">
           <h1 className="text-3xl font-bold">Audio Rooms</h1>
         </div>
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-4 md:grid-cols-2">
           {[...Array(6)].map((_, i) => (
             <Card key={i} className="animate-pulse">
               <CardHeader>
@@ -89,9 +74,8 @@ export default function AudioRoomPage() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 px-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold">Audio Rooms</h1>
         <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
           <DialogTrigger asChild>
             <Button className="flex items-center gap-2">
@@ -111,7 +95,7 @@ export default function AudioRoomPage() {
                   value={newRoomTitle}
                   onChange={(e) => setNewRoomTitle(e.target.value)}
                   placeholder="Enter room title..."
-                  onKeyDown={(e) => e.key === 'Enter' && handleCreateRoom()}
+                  onKeyDown={(e) => e.key === "Enter" && handleCreateRoom()}
                 />
               </div>
               <div className="flex justify-end gap-2">
@@ -126,7 +110,7 @@ export default function AudioRoomPage() {
                   onClick={handleCreateRoom}
                   disabled={!newRoomTitle.trim() || isCreating}
                 >
-                  {isCreating ? 'Creating...' : 'Create Room'}
+                  {isCreating ? "Creating..." : "Create Room"}
                 </Button>
               </div>
             </div>
@@ -152,47 +136,13 @@ export default function AudioRoomPage() {
           </Button>
         </div>
       ) : (
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-4 md:grid-cols-2">
           {activeRooms.map((room) => (
-            <Card key={room.id} className="hover:shadow-lg transition-shadow">
-              <CardHeader>
-                <div className="flex items-start justify-between">
-                  <div className="flex-1">
-                    <CardTitle className="text-lg line-clamp-2">{room.title}</CardTitle>
-                    <div className="flex items-center gap-2 mt-2">
-                      <Badge variant={room.is_live ? "default" : "secondary"}>
-                        {room.is_live ? "Live" : "Not Started"}
-                      </Badge>
-                      <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                        <Clock className="h-3 w-3" />
-                        {formatTimeAgo(room.created_at)}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between text-sm">
-                    <div className="flex items-center gap-1">
-                      <Users className="h-4 w-4" />
-                      <span>{room.active_participants || 0} participants</span>
-                    </div>
-                    <div className="text-muted-foreground">
-                      Host: {room.host?.fullName || 'Unknown'}
-                    </div>
-                  </div>
-
-                  <Button
-                    onClick={() => handleJoinRoom(room)}
-                    className="w-full"
-                    variant={room.is_live ? "default" : "outline"}
-                  >
-                    {room.is_live ? 'Join Room' : 'Join Room'}
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
+            <AudioRoomCard
+              key={room.id}
+              room={room}
+              onJoinRoom={handleJoinRoom}
+            />
           ))}
         </div>
       )}

@@ -8,6 +8,7 @@ export interface AudioRoom {
   created_at: string;
   host?: User;
   active_participants?: number;
+  existing_participants?: User[];
 }
 
 export interface AudioRoomMessage {
@@ -35,6 +36,8 @@ export interface AudioRoomWebSocketMessage {
   target_user_id?: string;
   data?: any;
   code?: string;
+  user?: User;
+  existing_participants?: User[];
 }
 
 export interface AudioRoomState {
