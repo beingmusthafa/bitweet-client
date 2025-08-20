@@ -41,7 +41,7 @@ export default function App() {
             <Route path="audioroom" element={<AudioRoomPage />} />
             <Route path="audioroom/:roomId" element={<AudioRoomDetailPage />} />
           </Route>
-          <Route path="*" element={<Navigate to="/" replace />} />
+          <Route path="*" element={<Navigate to="/profile" replace />} />
         </Routes>
       </Router>
     </Provider>

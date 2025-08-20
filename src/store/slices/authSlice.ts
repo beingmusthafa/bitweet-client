@@ -20,7 +20,7 @@ interface AuthState {
 
 const initialState: AuthState = {
   user: null,
-  isLoading: false,
+  isLoading: true,
   error: null,
 };
 
@@ -102,9 +102,11 @@ const authSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchProfile.pending, (state) => {
+        state.isLoading = true;
         state.error = null;
       })
       .addCase(fetchProfile.fulfilled, (state, action: PayloadAction<User>) => {
+        state.isLoading = false;
         state.user = action.payload;
       })
       .addCase(fetchProfile.rejected, (state) => {
