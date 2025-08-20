@@ -21,7 +21,7 @@ class NotificationWebSocket {
       return;
     }
 
-    const wsUrl = `${import.meta.env.VITE_API_URL?.replace(/^http/, "ws")}/notifications/ws`;
+    const wsUrl = import.meta.env.VITE_WS_URL;
 
     try {
       this.ws = new WebSocket(wsUrl);
