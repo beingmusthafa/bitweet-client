@@ -12,7 +12,7 @@ export default function MainLayout() {
   };
 
   return (
-    <div className="min-h-screen bg-background w-full">
+    <div className="bg-background w-full">
       <Header toggleSidebar={toggleSidebar} />
       <div className="w-full">
         <div className="flex gap-6 lg:pl-64">
