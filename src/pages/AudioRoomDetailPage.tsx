@@ -223,7 +223,7 @@ export default function AudioRoomDetailPage() {
   }
 
   return (
-    <div className="space-y-6 px-4">
+    <div className="space-y-6 px-4 pb-24">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
@@ -274,7 +274,7 @@ export default function AudioRoomDetailPage() {
               className="flex items-center gap-2"
             >
               <Trash2 className="h-4 w-4" />
-              Delete Room
+              <span className="hidden md:block">Delete Room</span>
             </Button>
           </div>
         )}
@@ -292,7 +292,7 @@ export default function AudioRoomDetailPage() {
         </div>
 
         {/* Chat Section */}
-        <div className="space-y-6">
+        <div className="space-y-6 md:mt-0 mt-12">
           <Card className="h-96">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -393,36 +393,36 @@ export default function AudioRoomDetailPage() {
       </div>
 
       {/* Audio Controls */}
-      <div className="flex items-center justify-center gap-4">
-        <Button
-          size="lg"
-          variant={isMuted ? "destructive" : "default"}
-          onClick={handleToggleMute}
-          className="flex items-center gap-2"
-          disabled={!isConnected}
-        >
-          {isMuted ? (
-            <>
-              <MicOff className="h-5 w-5" />
-              Unmute
-            </>
-          ) : (
-            <>
-              <Mic className="h-5 w-5" />
-              Mute
-            </>
-          )}
-        </Button>
+      <div className="fixed bottom-0 md:bottom-4 right-0 w-full md:w-[calc(100%-16rem)] bg-transparent p-4">
+        <div className="flex items-center justify-center gap-4">
+          <Button
+            size="lg"
+            variant={isMuted ? "destructive" : "default"}
+            onClick={handleToggleMute}
+            className="flex items-center gap-2"
+            disabled={!isConnected}
+          >
+            {isMuted ? (
+              <>
+                <MicOff className="h-5 w-5" />
+              </>
+            ) : (
+              <>
+                <Mic className="h-5 w-5" />
+              </>
+            )}
+          </Button>
 
-        <Button
-          size="lg"
-          variant="destructive"
-          onClick={handleLeaveRoom}
-          className="flex items-center gap-2"
-        >
-          <Phone className="h-5 w-5" />
-          Leave Room
-        </Button>
+          <Button
+            size="lg"
+            variant="destructive"
+            onClick={handleLeaveRoom}
+            className="flex items-center gap-2"
+          >
+            <Phone className="h-5 w-5" />
+            <span className="hidden md:block">Leave Room</span>
+          </Button>
+        </div>
       </div>
     </div>
   );
