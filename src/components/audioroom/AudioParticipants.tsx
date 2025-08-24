@@ -32,7 +32,7 @@ export default function AudioParticipants({
   const getBorderStyle = (
     isCurrentUser: boolean,
     audioLevel: number,
-    isCreator: boolean
+    isCreator: boolean,
   ) => {
     if (isCurrentUser) {
       return {
@@ -78,21 +78,20 @@ export default function AudioParticipants({
           const isSpeaking = audioLevel > 0.1;
 
           return (
-            <div key={participant.id} className="relative size-32">
-              {/* HOST Badge */}
-              {isCreator && (
-                <div className="absolute -top-2 left-0 bg-green-600 text-white text-[0.5rem] font-bold px-2 py-1 rounded z-10">
-                  HOST
-                </div>
-              )}
-
+            <div key={participant.id} className="relative md:size-32 size-28">
               {/* Avatar Container */}
               <div>
                 <div
-                  className="relative size-32 bg-gray-700 flex items-center justify-center transition-all duration-150"
+                  className="relative size-20 mx-auto bg-gray-700 flex items-center justify-center transition-all duration-150"
                   style={getBorderStyle(isCurrentUser, audioLevel, isCreator)}
                 >
-                  <User className="h-16 w-16 text-gray-400" />
+                  {/* HOST Badge */}
+                  {isCreator && (
+                    <div className="absolute -top-2 -left-2 bg-green-600 text-white text-[0.5rem] font-bold px-2 py-1 rounded z-10">
+                      HOST
+                    </div>
+                  )}
+                  <User className="size-10 text-gray-400" />
                   {/* Mic Status */}
                   <div className="absolute -bottom-2 -right-2 bg-gray-800 p-1 border-2 border-gray-700">
                     {participant.isMuted ? (
@@ -107,13 +106,13 @@ export default function AudioParticipants({
               {/* User Info */}
               <div className="mt-2 space-y-1">
                 <p
-                  className="font-medium text-sm text-white truncate"
+                  className="font-medium text-sm text-white truncate text-center"
                   title={participant.fullName}
                 >
                   {participant.fullName}
                 </p>
                 <p
-                  className="text-xs text-gray-400 truncate"
+                  className="text-xs text-gray-400 truncate text-center"
                   title={participant.username}
                 >
                   @{participant.username}

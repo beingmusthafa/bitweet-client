@@ -13,7 +13,6 @@ import {
   CardTitle,
 } from "../components/ui/card";
 import { Input } from "../components/ui/input";
-import { Badge } from "../components/ui/badge";
 import {
   Mic,
   MicOff,
@@ -72,7 +71,7 @@ export default function AudioRoomDetailPage() {
     if (roomId && !connectionAttemptedRef.current) {
       console.log(
         "[UI] useEffect triggered - attempting to connect to room:",
-        roomId
+        roomId,
       );
       connectionAttemptedRef.current = true;
       connectToRoom(roomId).catch(console.error);
@@ -83,7 +82,7 @@ export default function AudioRoomDetailPage() {
     return () => {
       console.log("[UI] AudioRoomDetailPage cleanup - COMPONENT UNMOUNTING");
       console.log(
-        "[UI] This could be due to: navigation, browser refresh, or window close"
+        "[UI] This could be due to: navigation, browser refresh, or window close",
       );
       closeAllPeerConnections();
       stopAudioStream();
@@ -119,7 +118,7 @@ export default function AudioRoomDetailPage() {
     ) {
       initializeExistingParticipants(
         currentRoom.existing_participants,
-        currentRoom.host_id
+        currentRoom.host_id,
       );
     }
   }, [currentRoom, initializeExistingParticipants]);
@@ -162,7 +161,7 @@ export default function AudioRoomDetailPage() {
 
     if (
       confirm(
-        "Are you sure you want to delete this room? This action cannot be undone."
+        "Are you sure you want to delete this room? This action cannot be undone.",
       )
     ) {
       try {
@@ -223,23 +222,20 @@ export default function AudioRoomDetailPage() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 px-4 pb-24">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
           <Button
-            variant="ghost"
+            variant={"outline"}
             size="sm"
             onClick={() => navigate("/audioroom")}
           >
-            <ArrowLeft className="h-4 w-4" />
+            <ArrowLeft className="size-4" />
           </Button>
           <div>
             <h1 className="text-2xl font-bold">{currentRoom.title}</h1>
             <div className="flex items-center gap-2 mt-1">
-              <Badge variant={currentRoom.is_live ? "default" : "secondary"}>
-                {currentRoom.is_live ? "Live" : "Not Started"}
-              </Badge>
               <div className="flex items-center gap-1 text-sm text-muted-foreground">
                 {connectionState === "connected" ? (
                   <>
@@ -277,7 +273,7 @@ export default function AudioRoomDetailPage() {
               className="flex items-center gap-2"
             >
               <Trash2 className="h-4 w-4" />
-              Delete Room
+              <span className="hidden md:block">Delete Room</span>
             </Button>
           </div>
         )}
@@ -285,7 +281,7 @@ export default function AudioRoomDetailPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Participants */}
-        <div className="lg:col-span-2 px-8">
+        <div className="lg:col-span-2 md:px-8">
           <AudioParticipants
             participants={participants}
             audioLevels={audioLevels}
@@ -295,7 +291,7 @@ export default function AudioRoomDetailPage() {
         </div>
 
         {/* Chat Section */}
-        <div className="space-y-6">
+        <div className="space-y-6 md:mt-0 mt-12">
           <Card className="h-96">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -347,7 +343,7 @@ export default function AudioRoomDetailPage() {
                               {
                                 hour: "2-digit",
                                 minute: "2-digit",
-                              }
+                              },
                             )}
                           </span>
                           {message.isOwn && (
@@ -396,36 +392,36 @@ export default function AudioRoomDetailPage() {
       </div>
 
       {/* Audio Controls */}
-      <div className="flex items-center justify-center gap-4">
-        <Button
-          size="lg"
-          variant={isMuted ? "destructive" : "default"}
-          onClick={handleToggleMute}
-          className="flex items-center gap-2"
-          disabled={!isConnected}
-        >
-          {isMuted ? (
-            <>
-              <MicOff className="h-5 w-5" />
-              Unmute
-            </>
-          ) : (
-            <>
-              <Mic className="h-5 w-5" />
-              Mute
-            </>
-          )}
-        </Button>
+      <div className="fixed bottom-0 md:bottom-4 right-0 w-full md:w-[calc(100%-16rem)] bg-transparent p-4">
+        <div className="flex items-center justify-center gap-4">
+          <Button
+            size="lg"
+            variant={isMuted ? "destructive" : "default"}
+            onClick={handleToggleMute}
+            className="flex items-center gap-2"
+            disabled={!isConnected}
+          >
+            {isMuted ? (
+              <>
+                <MicOff className="h-5 w-5" />
+              </>
+            ) : (
+              <>
+                <Mic className="h-5 w-5" />
+              </>
+            )}
+          </Button>
 
-        <Button
-          size="lg"
-          variant="destructive"
-          onClick={handleLeaveRoom}
-          className="flex items-center gap-2"
-        >
-          <Phone className="h-5 w-5" />
-          Leave Room
-        </Button>
+          <Button
+            size="lg"
+            variant="destructive"
+            onClick={handleLeaveRoom}
+            className="flex items-center gap-2"
+          >
+            <Phone className="h-5 w-5" />
+            <span className="hidden md:block">Leave Room</span>
+          </Button>
+        </div>
       </div>
     </div>
   );
