@@ -69,7 +69,7 @@ export default function PeoplePage() {
   }, []);
 
   return (
-    <div className="space-y-4  mx-auto md:w-1/2">
+    <div className="space-y-4  px-3 md:px-0 mx-auto md:w-1/2">
       <div className="space-y-2 flex flex-col items-center w-full">
         {initialLoading ? (
           new Array(7)

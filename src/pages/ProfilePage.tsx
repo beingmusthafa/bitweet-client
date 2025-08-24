@@ -38,7 +38,7 @@ export default function ProfilePage() {
       setLoading(true);
       setError(null);
       const response = await api.get<TweetsResponse>(
-        `${endpoints.getMyTweets}?page_number=${page}`
+        `${endpoints.getMyTweets}?page_number=${page}`,
       );
       const data = response.data;
 
@@ -80,7 +80,7 @@ export default function ProfilePage() {
 
   const updateTweet = async (
     id: string,
-    data: { text: string; isPrivate: boolean }
+    data: { text: string; isPrivate: boolean },
   ) => {
     try {
       console.log("Updating tweet:", id, data);
@@ -92,7 +92,7 @@ export default function ProfilePage() {
         const updated = prev.map((tweet) =>
           tweet.id === id
             ? { ...tweet, text: data.text, isPrivate: data.isPrivate }
-            : tweet
+            : tweet,
         );
         console.log("Updated tweets:", updated);
         return updated;
@@ -114,7 +114,7 @@ export default function ProfilePage() {
   if (!user) return null;
 
   return (
-    <div className="w-3/4 mx-auto space-y-6">
+    <div className="md:w-3/4 w-full px-3 md:px-0 mx-auto space-y-6">
       <Card className="bg-gradient-to-r rounded-none border-border/20">
         <CardHeader className="pb-6">
           <div className="flex justify-center w-full gap-6">
