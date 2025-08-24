@@ -13,14 +13,14 @@ import { useAppSelector } from "@/store/hooks";
 export default function NotificationDropdown() {
   const navigate = useNavigate();
   const { unreadNotifications } = useAppSelector(
-    (state) => state.notifications
+    (state) => state.notifications,
   );
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" size="sm" className="relative">
-          <Bell className="h-5 w-5" />
+          <Bell className="md:size-5 size-6" />
           {unreadNotifications.length > 0 && (
             <Badge className="absolute -top-1 -right-1 h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs bg-accent">
               {unreadNotifications.length > 9
@@ -63,7 +63,7 @@ export default function NotificationDropdown() {
                             day: "numeric",
                             hour: "2-digit",
                             minute: "2-digit",
-                          }
+                          },
                         )}
                       </div>
                     </div>

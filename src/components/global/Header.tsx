@@ -14,6 +14,12 @@ import { notificationWebSocket } from "@/lib/notification-socket";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { Menu } from "lucide-react";
 import UserAvatar from "./UserAvatar";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const Header = ({ toggleSidebar }: { toggleSidebar: () => void }) => {
   const dispatch = useAppDispatch();
@@ -72,7 +78,7 @@ const Header = ({ toggleSidebar }: { toggleSidebar: () => void }) => {
               className="lg:hidden"
               onClick={toggleSidebar}
             >
-              <Menu className="w-6 h-6" />
+              <Menu className="size-6" />
             </Button>
             <h1 className="text-xl font-bold text-primary hidden sm:block">
               Bitweet
@@ -83,7 +89,21 @@ const Header = ({ toggleSidebar }: { toggleSidebar: () => void }) => {
               Welcome, {user?.fullName}
             </span>
             <NotificationDropdown />
-            <UserAvatar />
+            <div className="sm:hidden">
+              <DropdownMenu>
+                <DropdownMenuTrigger>
+                  <UserAvatar />
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  <DropdownMenuItem onClick={handleLogoutClick}>
+                    Logout
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+            <div className="hidden md:block">
+              <UserAvatar />
+            </div>
             <Button
               variant="outline"
               size="sm"

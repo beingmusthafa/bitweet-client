@@ -53,12 +53,16 @@ export default function LoginForm() {
   };
 
   return (
-    <Card className="w-[25rem] mx-auto mt-32">
+    <Card className="md:w-[25rem] max-w-[90%] mx-auto mt-32 border-border/50">
+      <div className="space-x-2 flex whitespace-nowrap justify-center">
+        <img src="/bitweet.png" className="size-6" />
+        <h1 className="text-2xl font-bold text-white">Bitweet</h1>
+      </div>
       <CardHeader className="space-y-1">
-        <CardTitle className="text-2xl font-bold text-center">
+        <CardTitle className="text-2xl font-bold font-mono text-start">
           Sign in
         </CardTitle>
-        <CardDescription className="text-center">
+        <CardDescription className="text-start">
           Enter your credentials to access your account
         </CardDescription>
       </CardHeader>

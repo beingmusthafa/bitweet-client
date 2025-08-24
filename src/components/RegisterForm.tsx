@@ -29,7 +29,9 @@ import { useAppDispatch, useAppSelector } from "@/store/hooks";
 export default function RegisterForm() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { isRegisterLoading, error, user } = useAppSelector((state) => state.auth);
+  const { isRegisterLoading, error, user } = useAppSelector(
+    (state) => state.auth,
+  );
 
   const form = useForm<RegisterFormData>({
     resolver: zodResolver(registerSchema),
@@ -58,12 +60,16 @@ export default function RegisterForm() {
   };
 
   return (
-    <Card className="w-[25rem] mx-auto mt-32">
+    <Card className="md:w-[25rem] max-w-[90%] mx-auto md:mt-32 mt-20 border-border/50">
+      <div className="space-x-2 flex whitespace-nowrap justify-center">
+        <img src="/bitweet.png" className="size-6" />
+        <h1 className="text-2xl font-bold text-white">Bitweet</h1>
+      </div>
       <CardHeader className="space-y-1">
-        <CardTitle className="text-2xl font-bold text-center">
+        <CardTitle className="text-2xl font-bold text-start">
           Create account
         </CardTitle>
-        <CardDescription className="text-center">
+        <CardDescription className="text-start">
           Enter your information to create your account
         </CardDescription>
       </CardHeader>
@@ -140,7 +146,11 @@ export default function RegisterForm() {
               </div>
             )}
 
-            <Button type="submit" className="w-full" disabled={isRegisterLoading}>
+            <Button
+              type="submit"
+              className="w-full"
+              disabled={isRegisterLoading}
+            >
               {isRegisterLoading ? "Creating account..." : "Create account"}
             </Button>
           </form>
