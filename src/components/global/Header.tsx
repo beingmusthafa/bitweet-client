@@ -46,7 +46,7 @@ const Header = ({ toggleSidebar }: { toggleSidebar: () => void }) => {
   }, [user?.id]);
 
   return (
-    <header className="sticky top-0 bg-gray-900/80 backdrop-blur-sm border-b border-gray-700 px-4 z-40">
+    <header className="sticky top-0 bg-gray-900/80 backdrop-blur-sm border-b border-gray-700 md:px-4 z-40">
       {/*logout dialog*/}
       <Dialog open={logoutDialogOpen} onOpenChange={setLogoutDialogOpen}>
         <DialogContent>

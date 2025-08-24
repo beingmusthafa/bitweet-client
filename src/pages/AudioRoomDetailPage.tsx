@@ -72,7 +72,7 @@ export default function AudioRoomDetailPage() {
     if (roomId && !connectionAttemptedRef.current) {
       console.log(
         "[UI] useEffect triggered - attempting to connect to room:",
-        roomId
+        roomId,
       );
       connectionAttemptedRef.current = true;
       connectToRoom(roomId).catch(console.error);
@@ -83,7 +83,7 @@ export default function AudioRoomDetailPage() {
     return () => {
       console.log("[UI] AudioRoomDetailPage cleanup - COMPONENT UNMOUNTING");
       console.log(
-        "[UI] This could be due to: navigation, browser refresh, or window close"
+        "[UI] This could be due to: navigation, browser refresh, or window close",
       );
       closeAllPeerConnections();
       stopAudioStream();
@@ -119,7 +119,7 @@ export default function AudioRoomDetailPage() {
     ) {
       initializeExistingParticipants(
         currentRoom.existing_participants,
-        currentRoom.host_id
+        currentRoom.host_id,
       );
     }
   }, [currentRoom, initializeExistingParticipants]);
@@ -162,7 +162,7 @@ export default function AudioRoomDetailPage() {
 
     if (
       confirm(
-        "Are you sure you want to delete this room? This action cannot be undone."
+        "Are you sure you want to delete this room? This action cannot be undone.",
       )
     ) {
       try {
@@ -223,23 +223,20 @@ export default function AudioRoomDetailPage() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 px-4">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
           <Button
-            variant="ghost"
+            variant={"outline"}
             size="sm"
             onClick={() => navigate("/audioroom")}
           >
-            <ArrowLeft className="h-4 w-4" />
+            <ArrowLeft className="size-4" />
           </Button>
           <div>
             <h1 className="text-2xl font-bold">{currentRoom.title}</h1>
             <div className="flex items-center gap-2 mt-1">
-              <Badge variant={currentRoom.is_live ? "default" : "secondary"}>
-                {currentRoom.is_live ? "Live" : "Not Started"}
-              </Badge>
               <div className="flex items-center gap-1 text-sm text-muted-foreground">
                 {connectionState === "connected" ? (
                   <>
@@ -285,7 +282,7 @@ export default function AudioRoomDetailPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Participants */}
-        <div className="lg:col-span-2 px-8">
+        <div className="lg:col-span-2 md:px-8">
           <AudioParticipants
             participants={participants}
             audioLevels={audioLevels}
@@ -347,7 +344,7 @@ export default function AudioRoomDetailPage() {
                               {
                                 hour: "2-digit",
                                 minute: "2-digit",
-                              }
+                              },
                             )}
                           </span>
                           {message.isOwn && (
