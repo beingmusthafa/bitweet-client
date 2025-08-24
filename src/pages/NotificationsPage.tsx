@@ -34,7 +34,7 @@ export default function NotificationsPage() {
       setIsLoading(true);
       setError(null);
       const response = await api.get<NotificationsResponse>(
-        `/notifications?page=${page}`
+        `/notifications?page=${page}`,
       );
 
       if (page === 1) {
@@ -63,7 +63,7 @@ export default function NotificationsPage() {
 
   useEffect(() => {
     const hasUnreadNotifications = allNotifications.some(
-      (notification) => !notification.is_read
+      (notification) => !notification.is_read,
     );
     if (hasUnreadNotifications) {
       api.patch("/notifications/mark-all-read").catch(() => {});
@@ -116,7 +116,7 @@ export default function NotificationsPage() {
   }
 
   return (
-    <div className="w-3/4 mx-auto">
+    <div className="w-full px-3 md:px-0 md:w-3/4 mx-auto">
       <div className="flex justify-between items-center mb-6">
         <Button
           variant="outline"
@@ -170,7 +170,7 @@ export default function NotificationsPage() {
                         <p className="text-sm text-card-foreground leading-relaxed">
                           {notification.message}
                         </p>
-                        <span className="text-xs text-muted-foreground/70 mt-1.5 block text-end">
+                        <span className="text-xs text-muted-foreground/50 mt-1.5 block text-end">
                           {formatDate(notification.created_at)}
                         </span>
                       </div>
