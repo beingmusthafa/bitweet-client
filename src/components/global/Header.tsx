@@ -12,8 +12,10 @@ import NotificationDropdown from "./NotificationDropdown";
 import { logout } from "@/store/slices/authSlice";
 import { notificationWebSocket } from "@/lib/notification-socket";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { Menu } from "lucide-react";
+import UserAvatar from "./UserAvatar";
 
-const Header = () => {
+const Header = ({ toggleSidebar }: { toggleSidebar: () => void }) => {
   const dispatch = useAppDispatch();
   const [logoutDialogOpen, setLogoutDialogOpen] = useState(false);
   const handleLogout = () => {
@@ -38,7 +40,7 @@ const Header = () => {
   }, [user?.id]);
 
   return (
-    <header className="sticky top-0 bg-gray-900/80 backdrop-blur-sm border-b border-gray-700 px-4">
+    <header className="sticky top-0 bg-gray-900/80 backdrop-blur-sm border-b border-gray-700 px-4 z-40">
       {/*logout dialog*/}
       <Dialog open={logoutDialogOpen} onOpenChange={setLogoutDialogOpen}>
         <DialogContent>
@@ -62,17 +64,32 @@ const Header = () => {
       </Dialog>
 
       <div className="px-4">
-        <div className="flex justify-between items-center h-16 bg-background">
-          <div className="flex items-center">
-            <h1 className="text-xl font-bold text-primary">Bitweet </h1>
+        <div className="flex justify-between items-center h-16">
+          <div className="flex items-center gap-4">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="lg:hidden"
+              onClick={toggleSidebar}
+            >
+              <Menu className="w-6 h-6" />
+            </Button>
+            <h1 className="text-xl font-bold text-primary hidden sm:block">
+              Bitweet
+            </h1>
           </div>
           <div className="flex items-center space-x-4">
             <span className="text-sm text-card-foreground hidden sm:block">
               Welcome, {user?.fullName}
             </span>
             <NotificationDropdown />
-
-            <Button variant="outline" size="sm" onClick={handleLogoutClick}>
+            <UserAvatar />
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleLogoutClick}
+              className="hidden sm:block"
+            >
               Logout
             </Button>
           </div>
