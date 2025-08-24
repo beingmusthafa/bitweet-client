@@ -1,4 +1,4 @@
-import { Users, Mic, Clock, Volume2 } from "lucide-react";
+import { Users, Clock, Volume2 } from "lucide-react";
 import type { AudioRoom } from "../../types/audioroom";
 
 interface AudioRoomCardProps {
