@@ -1,5 +1,6 @@
 import { useCallback, useRef, useEffect, useState } from "react";
 import type { User } from "../types/user";
+import { api } from "@/lib/api";
 
 interface UseWebRTCAudioProps {
   sendWebSocketMessage: (message: any) => void;
@@ -24,7 +25,7 @@ export const useWebRTCAudio = ({
     Map<string, AudioParticipant>
   >(new Map());
   const [audioLevels, setAudioLevels] = useState<Map<string, number>>(
-    new Map()
+    new Map(),
   );
 
   // Initialize current user in participants
@@ -41,7 +42,7 @@ export const useWebRTCAudio = ({
         return newParticipants;
       });
     },
-    []
+    [],
   );
 
   // Initialize existing participants when joining room
@@ -60,7 +61,7 @@ export const useWebRTCAudio = ({
         return newParticipants;
       });
     },
-    []
+    [],
   );
 
   // Show toast notification
@@ -72,8 +73,8 @@ export const useWebRTCAudio = ({
         type === "success"
           ? "bg-green-500"
           : type === "warning"
-          ? "bg-orange-500"
-          : "bg-blue-500"
+            ? "bg-orange-500"
+            : "bg-blue-500"
       }`;
       toast.textContent = message;
       toast.style.transform = "translateX(100%)";
@@ -93,7 +94,7 @@ export const useWebRTCAudio = ({
         }, 300);
       }, 3000);
     },
-    []
+    [],
   );
 
   // Update current user mute status
@@ -111,7 +112,7 @@ export const useWebRTCAudio = ({
         return newParticipants;
       });
     },
-    []
+    [],
   );
 
   // Store data channels for each peer
@@ -126,7 +127,7 @@ export const useWebRTCAudio = ({
             JSON.stringify({
               type: "mute_status",
               isMuted,
-            })
+            }),
           );
         } catch (error) {
           console.log("Could not send mute status to user:", userId, error);
@@ -137,9 +138,20 @@ export const useWebRTCAudio = ({
 
   // Create peer connection for a user
   const createPeerConnection = useCallback(
-    (userId: string) => {
+    async (userId: string) => {
+      async function getIceServers() {
+        try {
+          const { data } = await api("/api/rooms/turn-credentials");
+          return data.iceServers;
+        } catch (error) {
+          console.error("Failed to get TURN credentials:", error);
+          return [{ urls: ["stun:stun.l.google.com:19302"] }];
+        }
+      }
+
+      const iceServers = await getIceServers();
       const pc = new RTCPeerConnection({
-        iceServers: [{ urls: "stun:stun.l.google.com:19302" }],
+        iceServers,
       });
 
       // Create data channel for mute status
@@ -247,7 +259,7 @@ export const useWebRTCAudio = ({
       peerConnectionsRef.current.set(userId, pc);
       return pc;
     },
-    [sendWebSocketMessage]
+    [sendWebSocketMessage],
   );
 
   // Start audio stream
@@ -315,7 +327,7 @@ export const useWebRTCAudio = ({
         console.log("Toggled mute:", newMutedState ? "muted" : "unmuted");
       }
     },
-    [isMuted, updateCurrentUserMuteStatus, broadcastMuteStatus]
+    [isMuted, updateCurrentUserMuteStatus, broadcastMuteStatus],
   );
 
   // Handle WebRTC signaling
@@ -325,7 +337,7 @@ export const useWebRTCAudio = ({
       let pc = peerConnectionsRef.current.get(from_user_id);
 
       if (!pc && signal_type === "offer") {
-        pc = createPeerConnection(from_user_id);
+        pc = await createPeerConnection(from_user_id);
 
         // Add local stream if available
         if (localStreamRef.current) {
@@ -363,7 +375,7 @@ export const useWebRTCAudio = ({
         console.error("WebRTC signaling error:", error);
       }
     },
-    [createPeerConnection, sendWebSocketMessage]
+    [createPeerConnection, sendWebSocketMessage],
   );
 
   // Handle user joined event from WebSocket
@@ -386,7 +398,7 @@ export const useWebRTCAudio = ({
       });
 
       // Create WebRTC connection
-      const pc = createPeerConnection(user.id);
+      const pc = await createPeerConnection(user.id);
 
       // Add local stream if available
       if (localStreamRef.current) {
@@ -410,7 +422,7 @@ export const useWebRTCAudio = ({
         console.error("Failed to create offer:", error);
       }
     },
-    [createPeerConnection, sendWebSocketMessage]
+    [createPeerConnection, sendWebSocketMessage],
   );
 
   // Handle user left event from WebSocket
@@ -510,7 +522,7 @@ export const useWebRTCAudio = ({
         console.error("Failed to setup audio analysis:", error);
       }
     },
-    []
+    [],
   );
 
   // Listen for WebRTC signals and user events
@@ -557,34 +569,34 @@ export const useWebRTCAudio = ({
 
     window.addEventListener(
       "webrtc_signal",
-      handleWebRTCEvent as EventListener
+      handleWebRTCEvent as EventListener,
     );
     window.addEventListener(
       "user_joined",
-      handleUserJoinedEvent as EventListener
+      handleUserJoinedEvent as EventListener,
     );
     window.addEventListener("user_left", handleUserLeftEvent as EventListener);
     window.addEventListener(
       "existing_participants",
-      handleExistingParticipantsEvent as EventListener
+      handleExistingParticipantsEvent as EventListener,
     );
 
     return () => {
       window.removeEventListener(
         "webrtc_signal",
-        handleWebRTCEvent as EventListener
+        handleWebRTCEvent as EventListener,
       );
       window.removeEventListener(
         "user_joined",
-        handleUserJoinedEvent as EventListener
+        handleUserJoinedEvent as EventListener,
       );
       window.removeEventListener(
         "user_left",
-        handleUserLeftEvent as EventListener
+        handleUserLeftEvent as EventListener,
       );
       window.removeEventListener(
         "existing_participants",
-        handleExistingParticipantsEvent as EventListener
+        handleExistingParticipantsEvent as EventListener,
       );
     };
   }, [handleWebRTCSignal, handleUserJoined, handleUserLeft]);
