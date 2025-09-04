@@ -1,69 +1,99 @@
-# React + TypeScript + Vite
+# Bitweet
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A social media platform built with modern web technologies. This project is a frontend application that provides features like a tweet feed, user authentication, profiles, notifications, and audio chat rooms.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+*   **Authentication:** User registration and login.
+*   **Tweets:** Create and view tweets.
+*   **User Profiles:** View user profiles.
+*   **Notifications:** Receive real-time notifications.
+*   **Audio Rooms:** Create and join audio chat rooms.
 
-## Expanding the ESLint configuration
+## Tech Stack
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+This project is built with a modern and powerful tech stack:
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+*   **Framework:** [React](https://react.dev/)
+*   **Build Tool:** [Vite](https://vitejs.dev/)
+*   **Language:** [TypeScript](https://www.typescriptlang.org/)
+*   **Styling:** [Tailwind CSS](https://tailwindcss.com/)
+*   **State Management:** [Redux Toolkit](https://redux-toolkit.js.org/)
+*   **Routing:** [React Router](https://reactrouter.com/)
+*   **Form Handling:** [React Hook Form](https://react-hook-form.com/) with [Zod](https://zod.dev/) for validation
+*   **UI Components:** [shadcn/ui](https://ui.shadcn.com/)
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+## Folder Structure
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+The project follows a standard structure for React applications:
+
+```
+/
+├── public/               # Static assets
+├── src/
+│   ├── assets/           # Images, icons, etc.
+│   ├── components/       # Reusable UI components (not detailed here)
+│   ├── hooks/            # Custom React hooks
+│   ├── lib/              # API clients, utility functions, etc.
+│   ├── pages/            # Application pages
+│   ├── store/            # Redux store and slices
+│   └── types/            # TypeScript type definitions
+├── .env.template         # Environment variable template
+├── index.html            # Main HTML file
+├── package.json          # Project dependencies and scripts
+└── vite.config.ts        # Vite configuration
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Core Logic and Hooks
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### Hooks (`src/hooks/`)
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+*   `useAudioRoom.tsx`: Manages the state and logic for audio rooms.
+*   `useConnections.tsx`: Handles logic related to user connections.
+*   `useTweets.tsx`: Manages the state and logic for tweets.
+*   `useWebRTCAudio.tsx`: Provides WebRTC functionality for audio communication.
+
+### Library (`src/lib/`)
+
+*   `api.ts`: Configures the Axios instance for making API requests.
+*   `endpoints.ts`: Defines the API endpoints used in the application.
+*   `notification-socket.tsx`: Manages the WebSocket connection for real-time notifications.
+*   `utils.ts`: Contains utility functions used throughout the application.
+*   `validations/auth.ts`: Defines the Zod schemas for authentication-related form validations.
+
+### State Management (`src/store/`)
+
+*   `slices/audioroomSlice.ts`: Manages the state for audio rooms.
+*   `slices/authSlice.ts`: Manages the state for user authentication.
+*   `slices/notificationSlice.ts`: Manages the state for notifications.
+
+## Getting Started
+
+To get a local copy up and running, follow these simple steps.
+
+### Prerequisites
+
+*   [Node.js](https://nodejs.org/) (v18 or higher)
+*   [pnpm](https://pnpm.io/)
+
+### Installation
+
+1.  Clone the repo
+    ```sh
+    git clone <repo_url>
+    ```
+2.  Install NPM packages
+    ```sh
+    pnpm install
+    ```
+3.  Create a `.env` file from the `.env.template` and add the required environment variables.
+
+### Usage
+
+To start the development server, run:
+
+```sh
+pnpm dev
 ```
+
+This will open the application in your browser at `http://localhost:5173`.
