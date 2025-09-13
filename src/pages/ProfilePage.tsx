@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -130,6 +131,11 @@ export default function ProfilePage() {
                 {user.email}
               </p>
             </div>
+            <Link to="/change-password">
+              <Button variant="outline" size={"sm"} className="mt-4">
+                Change Password
+              </Button>
+            </Link>
           </div>
         </CardHeader>
       </Card>

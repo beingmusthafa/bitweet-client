@@ -16,6 +16,7 @@ import FeedPage from "./pages/FeedPage";
 import NotificationsPage from "./pages/NotificationsPage";
 import AudioRoomPage from "./pages/AudioRoomPage";
 import AudioRoomDetailPage from "./pages/AudioRoomDetailPage";
+import ChangePasswordPage from "./pages/ChangePasswordPage";
 import MainLayout from "./components/global/MainLayout";
 
 export default function App() {
@@ -40,6 +41,7 @@ export default function App() {
             <Route path="notifications" element={<NotificationsPage />} />
             <Route path="audioroom" element={<AudioRoomPage />} />
             <Route path="audioroom/:roomId" element={<AudioRoomDetailPage />} />
+            <Route path="change-password" element={<ChangePasswordPage />} />
           </Route>
           <Route path="*" element={<Navigate to="/feed" replace />} />
         </Routes>

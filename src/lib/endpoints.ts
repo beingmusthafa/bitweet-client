@@ -10,4 +10,6 @@ export const endpoints = {
   unfollow: "/user/connections/unfollow",
   getPeople: "/user/connections/people",
   getFeed: "/user/tweets/",
+  sendPasswordResetOtp: "/user/password/send-otp",
+  changePassword: "/user/password/change",
 } as const;
