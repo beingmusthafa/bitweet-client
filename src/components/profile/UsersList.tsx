@@ -33,7 +33,7 @@ export default function UsersList({
   listType,
 }: UsersListProps) {
   const [unfollowingUsers, setUnfollowingUsers] = useState<Set<string>>(
-    new Set()
+    new Set(),
   );
   const [confirmDialog, setConfirmDialog] = useState<{
     open: boolean;
@@ -85,12 +85,14 @@ export default function UsersList({
       listType === "followers"
         ? "No followers yet"
         : listType === "following"
-        ? "Not following anyone yet"
-        : "No users found";
+          ? "Not following anyone yet"
+          : "No users found";
 
     return (
       <div className="text-center py-8">
-        <p className="text-muted-foreground">{emptyText || defaultMessage}</p>
+        <p className="text-muted-foreground text-center">
+          {emptyText || defaultMessage}
+        </p>
       </div>
     );
   }

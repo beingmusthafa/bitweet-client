@@ -119,8 +119,10 @@ export default function AudioRoomPage() {
       {activeRooms.length === 0 && !isLoading ? (
         <div className="text-center py-12">
           <Mic className="h-16 w-16 mx-auto text-muted-foreground mb-4" />
-          <h3 className="text-xl font-semibold mb-2">No Active Rooms</h3>
-          <p className="text-muted-foreground mb-4">
+          <h3 className="text-xl font-semibold mb-2 text-center">
+            No Active Rooms
+          </h3>
+          <p className="text-muted-foreground mb-4 text-center">
             Be the first to start an audio conversation!
           </p>
           <Button onClick={() => setIsCreateDialogOpen(true)}>
