@@ -118,7 +118,7 @@ export default function ProfilePage() {
     <div className="md:w-3/4 w-full px-3 md:px-0 mx-auto space-y-6">
       <Card className="bg-gradient-to-r rounded-none border-border/20">
         <CardHeader className="pb-6">
-          <div className="flex justify-center w-full gap-6">
+          <div className="flex md:flex-row flex-col items-center justify-center w-full gap-6">
             <div className="flex-shrink-0">
               <UserAvatar size="lg" />
             </div>

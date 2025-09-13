@@ -99,9 +99,7 @@ export default function ChangePasswordPage() {
               <ArrowLeft /> Back to Profile
             </Button>
           </div>
-          <CardTitle className="text-xl font-medium text-center">
-            Change Password
-          </CardTitle>
+          <CardTitle className="text-xl text-center">Change Password</CardTitle>
         </CardHeader>
         <CardContent>
           {step === "request-otp" && (
