@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -117,7 +118,7 @@ export default function ProfilePage() {
     <div className="md:w-3/4 w-full px-3 md:px-0 mx-auto space-y-6">
       <Card className="bg-gradient-to-r rounded-none border-border/20">
         <CardHeader className="pb-6">
-          <div className="flex justify-center w-full gap-6">
+          <div className="flex md:flex-row flex-col items-center justify-center w-full gap-6">
             <div className="flex-shrink-0">
               <UserAvatar size="lg" />
             </div>
@@ -130,6 +131,11 @@ export default function ProfilePage() {
                 {user.email}
               </p>
             </div>
+            <Link to="/change-password">
+              <Button variant="outline" size={"sm"} className="mt-4">
+                Change Password
+              </Button>
+            </Link>
           </div>
         </CardHeader>
       </Card>
